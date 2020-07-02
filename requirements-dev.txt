@@ -1,0 +1,8 @@
+pytest
+mock
+coverage
+setuptools
+twine
+wheel
+mkdocs
+coveralls
