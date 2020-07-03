@@ -27,6 +27,15 @@ Options:
   --full                      - Enforces matching full filename against pattern
 ```
 
+# Installation
+```shell
+pip3 install regex-rename
+```
+
+Requirements:
+
+* Python 3.6 (or newer) with pip
+
 # Example
 
 Imagine you've got audio files awfully named like this:
@@ -35,7 +44,7 @@ Imagine you've got audio files awfully named like this:
 - ...
 - `Stanis▯aw+Lem+Niezwyci▯▯ony+(0051).mp3`
 
-and you want to rename all of them to `01-Niezwyciężony.mp3` (extracting number from the end and put it at the beginning and shortening it to 2 digits by the way).
+and you want to rename all of them in manner `01-Niezwyciężony.mp3` (extracting number from the end and put it at the beginning and shortening it to 2 digits by the way).
 
 ## Step 1: Testing matching pattern 
 
@@ -56,3 +65,9 @@ Let's test it:
 
 All above commands were just testing our patterns so that we could experiment with regex patterns. Only when we're sure that everything is matched correctly, we can use `--rename` flag which does the actual renaming:  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-3.png?raw=true)  
+
+After that files are named properly:
+- `01-Niezwyciężony.mp3`
+- `02-Niezwyciężony.mp3`
+- ...
+- `51-Niezwyciężony.mp3`

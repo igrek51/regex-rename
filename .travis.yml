@@ -1,0 +1,14 @@
+dist: xenial
+language: python
+python:
+  - "3.7"
+  - "3.8"
+
+install:
+  - pip install -r requirements.txt -r requirements-dev.txt
+before_script:
+  - python3 setup.py develop
+script:
+  - ./pytest.sh | tee pytest.log
+after_success:
+  - CODECOV_TOKEN="8d41ebb7-7b7b-4e6c-bec1-b4fa709781eb" bash <(curl -s https://codecov.io/bash)
