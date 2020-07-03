@@ -10,6 +10,6 @@ def main():
         argument('pattern', help='Regex pattern to match filenames'),
         argument('replacement', required=False, help='Replacement regex pattern for renamed files. '
                                                      'Use \\1, \\2 syntax to make use of matched groups'),
-        flag('rename', help='Does actual renaming files instead of just testing replacement pattern'),
+        flag('rename', 'r', help='Does actual renaming files instead of just testing replacement pattern'),
         flag('full', help='Enforces matching full filename against pattern'),
     ).run()

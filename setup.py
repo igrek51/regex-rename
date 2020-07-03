@@ -8,7 +8,7 @@ with open("requirements.txt", "r") as fh:
     install_requires = fh.read().splitlines()
 
 setuptools.setup(
-    name="trimmer",
+    name="regex-rename",
     version=__version__,
     author="igrek51",
     author_email="igrek51.dev@gmail.com",
