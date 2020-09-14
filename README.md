@@ -39,12 +39,13 @@ Requirements:
 # Example
 
 Imagine you've got audio files awfully named like this:
-- `Stanis▯aw+Lem+Niezwyci▯▯ony+(0001).mp3`
-- `Stanis▯aw+Lem+Niezwyci▯▯ony+(0002).mp3`
+- `Stanis▯aw+Lem+Invincible+(1).mp3`
+- `Stanis▯aw+Lem+Invincible+(2 ).mp3`
+- `Stanisław_Lem_Invincible (3) .mp3`
 - ...
-- `Stanis▯aw+Lem+Niezwyci▯▯ony+(0051).mp3`
+- `Stanis▯aw+Lem+Invincible+(51).mp3`
 
-and you want to rename all of them in manner `01-Niezwyciężony.mp3` (extracting number from the end and put it at the beginning and shortening it to 2 digits by the way).
+and you want to rename all of them in a manner `01 The Invincible.mp3` (extracting number from the end and put it at the beginning and padding it to 2 digits by the way).
 
 ## Step 1: Testing matching pattern 
 
@@ -56,7 +57,7 @@ Notice that regex groups are extracted in logs.
 
 ## Step 2: Testing replacement pattern
 
-We'd like to replace all files to a pattern: `\1-Niezwyciężony.mp3` (`\1` is a first extracted group from matching pattern)
+We'd like to replace all files to a pattern: `\1 The Invincible.mp3` (`\1` is a first extracted group from matching pattern)
 
 Let's test it:  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-2.png?raw=true)  
@@ -67,7 +68,7 @@ All above commands were just testing our patterns so that we could experiment wi
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-3.png?raw=true)  
 
 After that files are named properly:
-- `01-Niezwyciężony.mp3`
-- `02-Niezwyciężony.mp3`
+- `01 The Invincible.mp3`
+- `02 The Invincible.mp3`
 - ...
-- `51-Niezwyciężony.mp3`
+- `51 The Invincible.mp3`

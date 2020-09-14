@@ -15,9 +15,9 @@ def test_bulk_rename():
         for idx in range(3):
             shell(f'touch "Stanis▯aw+Lem+Niezwyci▯▯ony+(000{idx}).mp3"')
 
-        bulk_rename(r'.+\(00(\d{2})\).+', r'\1-Niezwyciężony.mp3', rename=False, full=False)
+        bulk_rename(r'.+\(00(\d{2})\).+', r'\1-Niezwyciężony.mp3', rename=False, full=False, pad_to=0)
 
-        bulk_rename(r'.+\(00(\d{2})\).+', r'\1-Niezwyciężony.mp3', rename=True, full=False)
+        bulk_rename(r'.+\(00(\d{2})\).+', r'\1-Niezwyciężony.mp3', rename=True, full=False, pad_to=0)
 
         files = set([str(f) for f in Path().iterdir()])
         assert files == {'00-Niezwyciężony.mp3', '01-Niezwyciężony.mp3', '02-Niezwyciężony.mp3', 'some-other-file.txt'}

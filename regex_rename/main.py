@@ -1,4 +1,4 @@
-from nuclear import CliBuilder, argument, flag
+from nuclear import CliBuilder, argument, flag, parameter
 
 from .bulk import bulk_rename
 from .version import __version__
@@ -12,4 +12,5 @@ def main():
                                                      'Use \\1, \\2 syntax to make use of matched groups'),
         flag('rename', 'r', help='Does actual renaming files instead of just testing replacement pattern'),
         flag('full', help='Enforces matching full filename against pattern'),
+        parameter('pad-to', type=int, help='Applies padding with zeros with given length on matched numerical groups'),
     ).run()
