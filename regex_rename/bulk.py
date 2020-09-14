@@ -41,15 +41,19 @@ def match_filename(filename: str, pattern: str, replacement: Optional[str], full
             if group.isnumeric():
                 group_dict[idx] = group.zfill(padding)
 
-    group_kwargs = {f'group_{idx + 1}': group for idx, group in group_dict.items()}
+    group_kwargs = {f'group_{idx}': group for idx, group in group_dict.items()}
 
     if not replacement:
         log.info('matched', file=filename, **group_kwargs)
         return Match(name_from=filename, name_to=None, groups=group_dict, re_match=match)
 
-    new_name = match.expand(replacement)
+    match.expand(replacement)
+    new_name = replacement
+    for idx, group in group_dict.items():
+        new_name = new_name.replace(f'\\{idx}', group)
+
     log.info('matched', **{'from': filename, 'to': new_name}, **group_kwargs)
-    return Match(name_from=filename, name_to=None, groups=group_dict, re_match=match)
+    return Match(name_from=filename, name_to=new_name, groups=group_dict, re_match=match)
 
 
 def rename_matched(matches: List[Match]):
