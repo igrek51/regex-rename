@@ -11,7 +11,7 @@ enter `regex-rename` for help:
 
 ```shell
 $ regex-rename 
-regex-rename v0.1.0 (nuclear v1.1.5) - Regular expressions bulk rename tool for multiple files
+regex-rename v0.1.1 (nuclear v1.1.5) - Regular expressions bulk rename tool for multiple files
 
 Usage:
 regex-rename [OPTIONS] PATTERN [REPLACEMENT]
@@ -23,8 +23,9 @@ Arguments:
 Options:
   --version                   - Print version information and exit
   -h, --help [SUBCOMMANDS...] - Display this help and exit
-  --rename                    - Does actual renaming files instead of just testing replacement pattern
+  -r, --rename                - Does actual renaming files instead of just testing replacement pattern
   --full                      - Enforces matching full filename against pattern
+  --pad-to PAD_TO             - Applies padding with zeros with given length on matched numerical groups
 ```
 
 # Installation
@@ -49,26 +50,29 @@ and you want to rename all of them in a manner `01 The Invincible.mp3` (extracti
 
 ## Step 1: Testing matching pattern 
 
-Our Regex pattern to match those files and extract 2 digit number should be like this: `.+\(00(\d{2})\).+`
+Our Regex pattern to match those files and extract number from parentheses should be like this: `.+\((\d+) ?\).+`
 
-Let's test matching pattern:  
+Let's test matching pattern: `regex-rename '.+\((\d+) ?\).+'`  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-1.png?raw=true)    
 Notice that regex groups are extracted in logs.
 
 ## Step 2: Testing replacement pattern
 
-We'd like to replace all files to a pattern: `\1 The Invincible.mp3` (`\1` is a first extracted group from matching pattern)
+We'd like to replace all files to a pattern: `\1 The Invincible.mp3` (`\1` is a first extracted group from matching pattern).
+Regex can't easily pad numbers with zeros. Fortunately, we can use `--pad-to=2` to obtain 2-digit numbers
 
-Let's test it:  
+Let's test it: `regex-rename '.+\((\d+) ?\).+' '\1 The Invincible.mp3' --pad-to=2`  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-2.png?raw=true)  
 
 ## Step 3: Actual renaming
 
 All above commands were just testing our patterns so that we could experiment with regex patterns. Only when we're sure that everything is matched correctly, we can use `--rename` flag which does the actual renaming:  
+`regex-rename '.+\((\d+) ?\).+' '\1 The Invincible.mp3' --pad-to=2 --rename`  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-3.png?raw=true)  
 
-After that files are named properly:
+From now files are named properly:
 - `01 The Invincible.mp3`
 - `02 The Invincible.mp3`
+- `03 The Invincible.mp3`
 - ...
 - `51 The Invincible.mp3`

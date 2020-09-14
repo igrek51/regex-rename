@@ -15,7 +15,7 @@ def bulk_rename(pattern: str, replacement: Optional[str], rename: bool, full: bo
                   testing_mode=testing, pattern=pattern, replacement=replacement, full_match=full, padding=pad_to)
 
         filenames = sorted([str(f) for f in Path().iterdir()])
-        matched = [match_filename(filename, pattern, replacement, full, pad_to) for filename in filenames]
+        matched = [match_filename(filename, pattern, replacement, full, pad_to, testing) for filename in filenames]
         matched = list(filter(lambda e: e, matched))
 
         if testing:
@@ -25,7 +25,8 @@ def bulk_rename(pattern: str, replacement: Optional[str], rename: bool, full: bo
             log.info('files renamed', count=len(matched))
 
 
-def match_filename(filename: str, pattern: str, replacement: Optional[str], full: bool, padding: int) -> Optional[Match]:
+def match_filename(filename: str, pattern: str, replacement: Optional[str], full: bool, padding: int,
+                   testing: bool) -> Optional[Match]:
     if full:
         match = re.fullmatch(pattern, filename)
     else:
@@ -52,7 +53,8 @@ def match_filename(filename: str, pattern: str, replacement: Optional[str], full
     for idx, group in group_dict.items():
         new_name = new_name.replace(f'\\{idx}', group)
 
-    log.info('matched', **{'from': filename, 'to': new_name}, **group_kwargs)
+    if testing:
+        log.info('matched', **{'from': filename, 'to': new_name}, **group_kwargs)
     return Match(name_from=filename, name_to=new_name, groups=group_dict, re_match=match)
 
 
