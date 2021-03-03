@@ -25,15 +25,21 @@ def bulk_rename(pattern: str, replacement: Optional[str], rename: bool, full: bo
             log.info('files renamed', count=len(matched))
 
 
-def match_filename(filename: str, pattern: str, replacement: Optional[str], full: bool, padding: int,
-                   testing: bool) -> Optional[Match]:
+def match_filename(
+    filename: str, 
+    pattern: str, 
+    replacement: Optional[str], 
+    full: bool, 
+    padding: int,
+    testing: bool,
+) -> Optional[Match]:
     if full:
         match = re.fullmatch(pattern, filename)
     else:
         match = re.search(pattern, filename)
 
     if not match:
-        log.warn('not matched', file=filename)
+        log.warn('no match', file=filename)
         return None
 
     group_dict = {idx + 1: group for idx, group in enumerate(match.groups())}
@@ -45,16 +51,20 @@ def match_filename(filename: str, pattern: str, replacement: Optional[str], full
     group_kwargs = {f'group_{idx}': group for idx, group in group_dict.items()}
 
     if not replacement:
-        log.info('matched', file=filename, **group_kwargs)
+        log.info('matched ', file=filename, **group_kwargs)
         return Match(name_from=filename, name_to=None, groups=group_dict, re_match=match)
 
-    match.expand(replacement)
+    validate_replacement(match, replacement)
     new_name = replacement
     for idx, group in group_dict.items():
+        if '\\L' in new_name:
+            new_name = new_name.replace(f'\\L\\{idx}', group.lower())
+        if '\\U' in new_name:
+            new_name = new_name.replace(f'\\U\\{idx}', group.upper())
         new_name = new_name.replace(f'\\{idx}', group)
 
     if testing:
-        log.info('matched', **{'from': filename, 'to': new_name}, **group_kwargs)
+        log.info('matched ', **{'from': filename, 'to': new_name}, **group_kwargs)
     return Match(name_from=filename, name_to=new_name, groups=group_dict, re_match=match)
 
 
@@ -66,3 +76,9 @@ def rename_matched(matches: List[Match]):
     for match in matches:
         log.info('renaming file', **{'from': match.name_from, 'to': match.name_to})
         os.rename(match.name_from, match.name_to)
+
+
+def validate_replacement(match: Match, replacement: str):
+    """Test if it's valid in terms of regex rules"""
+    simplified = replacement.replace('\\L', '').replace('\\U', '')
+    match.expand(simplified)
