@@ -6,6 +6,22 @@ Regular expressions bulk rename tool for multiple files
 [![Build Status](https://travis-ci.org/igrek51/regex-rename.svg?branch=master)](https://travis-ci.org/igrek51/regex-rename)
 [![codecov](https://codecov.io/gh/igrek51/regex-rename/branch/master/graph/badge.svg)](https://codecov.io/gh/igrek51/regex-rename)
 
+# Quickstart
+Renaming multiple files at once:
+```shell
+$ ls
+01.mp3  02.mp3
+
+$ regex-rename --rename '(\d+).mp3' '\1_Greatest_Hits.mp3'
+[2021-03-04 00:27:23] [DEBUG] matching regex pattern testing_mode=False pattern=(\d+).mp3 replacement=\1_Greatest_Hits.mp3 full_match=False padding=None
+[2021-03-04 00:27:23] [INFO ] renaming file from=01.mp3 to=01_Greatest_Hits.mp3
+[2021-03-04 00:27:23] [INFO ] renaming file from=02.mp3 to=02_Greatest_Hits.mp3
+[2021-03-04 00:27:23] [INFO ] files renamed count=2
+
+$ ls
+01_Greatest_Hits.mp3  02_Greatest_Hits.mp3
+```
+
 # Usage
 enter `regex-rename` for help:
 
@@ -76,3 +92,13 @@ From now files are named properly:
 - `03 The Invincible.mp3`
 - ...
 - `51 The Invincible.mp3`
+
+
+# Beyond the Regex
+`regex-rename` also supports some transformations not covered by regular expressions standard:
+- Converting to lowercase by adding `\L` before group number:  
+`regex-rename '([A-Z]+).mp3' '\L\1.mp3'`
+- Converting to uppercase by adding `\U` before group number:  
+`regex-rename '([a-z]+).mp3' '\U\1.mp3'`
+- Padding numbers with zeros by specifying `--pad-to` parameter:  
+`regex-rename '(\d+).mp3' '\1.mp3' --pad-to=2`
