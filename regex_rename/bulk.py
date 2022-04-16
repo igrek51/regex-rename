@@ -45,7 +45,7 @@ def match_filename(
     group_dict = {idx + 1: group for idx, group in enumerate(match.groups())}
     if padding:
         for idx, group in group_dict.items():
-            if group.isnumeric():
+            if type(group) == str and group.isnumeric():
                 group_dict[idx] = group.zfill(padding)
 
     group_kwargs = {f'group_{idx}': group for idx, group in group_dict.items()}
@@ -57,6 +57,8 @@ def match_filename(
     validate_replacement(match, replacement)
     new_name = replacement
     for idx, group in group_dict.items():
+        if type(group) != str:
+            group = ''
         if '\\L' in new_name:
             new_name = new_name.replace(f'\\L\\{idx}', group.lower())
         if '\\U' in new_name:
