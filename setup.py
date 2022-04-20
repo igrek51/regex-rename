@@ -16,7 +16,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/igrek51/regex-rename",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=["tests.*", "tests"]),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
@@ -24,10 +24,10 @@ setuptools.setup(
     ],
     install_requires=install_requires,
     license='MIT',
-    python_requires='>=3.6.0',
+    python_requires='>=3.7.0',
     entry_points={
         "console_scripts": [
-            "regex-rename = regex_rename:main",
+            "regex-rename = regex_rename.main:main",
         ],
     },
 )

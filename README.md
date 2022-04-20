@@ -1,5 +1,5 @@
 # regex-rename
-Regular expressions bulk rename tool for multiple files
+Bulk rename tool based on regular expressions to rename multiple files at once.
 
 [![GitHub version](https://badge.fury.io/gh/igrek51%2Fregex-rename.svg)](https://github.com/igrek51/regex-rename)
 [![PyPI version](https://badge.fury.io/py/regex-rename.svg)](https://pypi.org/project/regex-rename)
@@ -20,28 +20,6 @@ $ regex-rename --rename '(\d+).mp3' '\1_Greatest_Hits.mp3'
 
 $ ls
 01_Greatest_Hits.mp3  02_Greatest_Hits.mp3
-```
-
-# Usage
-enter `regex-rename` for help:
-
-```shell
-$ regex-rename 
-regex-rename v0.1.1 (nuclear v1.1.5) - Regular expressions bulk rename tool for multiple files
-
-Usage:
-regex-rename [OPTIONS] PATTERN [REPLACEMENT]
-
-Arguments:
-   PATTERN       - Regex pattern to match filenames
-   [REPLACEMENT] - Replacement regex pattern for renamed files. Use \1, \2 syntax to make use of matched groups
-
-Options:
-  --version                   - Print version information and exit
-  -h, --help [SUBCOMMANDS...] - Display this help and exit
-  -r, --rename                - Does actual renaming files instead of just testing replacement pattern
-  --full                      - Enforces matching full filename against pattern
-  --pad-to PAD_TO             - Applies padding with zeros with given length on matched numerical groups
 ```
 
 # Installation
@@ -93,6 +71,27 @@ From now files are named properly:
 - ...
 - `51 The Invincible.mp3`
 
+# Usage
+enter `regex-rename` for help:
+
+```shell
+$ regex-rename 
+regex-rename v0.1.1 (nuclear v1.1.5) - Regular expressions bulk rename tool for multiple files
+
+Usage:
+regex-rename [OPTIONS] PATTERN [REPLACEMENT]
+
+Arguments:
+   PATTERN       - Regex pattern to match filenames
+   [REPLACEMENT] - Replacement regex pattern for renamed files. Use \1, \2 syntax to make use of matched groups
+
+Options:
+  --version                   - Print version information and exit
+  -h, --help [SUBCOMMANDS...] - Display this help and exit
+  -r, --rename                - Does actual renaming files instead of just testing replacement pattern
+  --full                      - Enforces matching full filename against pattern
+  --pad-to PAD_TO             - Applies padding with zeros with given length on matched numerical groups
+```
 
 # Beyond the Regex
 `regex-rename` also supports some transformations not covered by regular expressions standard:

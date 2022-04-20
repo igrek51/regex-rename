@@ -1,1 +1,1 @@
-nuclear
+nuclear>=1.2.3
