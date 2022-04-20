@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+from typing import Set
+
+import pytest
 
 from regex_rename.rename import bulk_rename
 
@@ -13,14 +16,43 @@ def test_bulk_rename():
         Path("Stanis_aw+Lem+Niezwyci__ony+(02).mp3").touch()
         Path("Stanis_aw+Lem+Niezwyci__ony+(03).mp3").touch()
 
-        bulk_rename(r'.+\((\d{1,2})\).mp3', r'\1 Niezwyciężony.mp3', testing=True, full=False, padding=2)
-        bulk_rename(r'.+\((\d{1,2})\).mp3', r'\1 Niezwyciężony.mp3', testing=False, full=False, padding=2)
+        bulk_rename(r'.+\((\d{1,2})\).mp3', r'\1 Niezwyciężony.mp3', testing=True, padding=2)
 
-        files = set([str(f) for f in Path().iterdir()])
-        assert files == {'01 Niezwyciężony.mp3', '02 Niezwyciężony.mp3', '03 Niezwyciężony.mp3', 'some-other-file.txt'}
+        assert _list_files() != {'01 Niezwyciężony.mp3', '02 Niezwyciężony.mp3', '03 Niezwyciężony.mp3', 'some-0ther-file.txt'}
+
+        bulk_rename(r'.+\((\d{1,2})\).mp3', r'\1 Niezwyciężony.mp3', testing=False, padding=2)
+
+        assert _list_files() == {'01 Niezwyciężony.mp3', '02 Niezwyciężony.mp3', '03 Niezwyciężony.mp3', 'some-0ther-file.txt'}
 
         for idx in range(3):
             Path(f'0{idx+1} Niezwyciężony.mp3').unlink()
 
     finally:
         os.chdir(cwd)
+
+
+def test_match_without_replace():
+    cwd = os.getcwd()
+    try:
+        os.chdir('tests/res/2mp3')
+
+        matches = bulk_rename(r'(\d+)\.(.+)', replacement_pattern=None, testing=True)
+        assert len(matches) == 2
+        match = matches[0]
+        assert match.name_from == '_1.mp3'
+        assert match.name_to == None
+        assert match.groups == {1: '1', 2: 'mp3'}
+
+    finally:
+        os.chdir(cwd)
+
+
+def test_no_replacement_nor_testing():
+    with pytest.raises(RuntimeError) as excinfo:
+        bulk_rename(r'(\d+).*\.(.+)', replacement_pattern=None, testing=False)
+    assert 'replacement pattern is required for renaming' in str(excinfo.value)
+
+
+def _list_files() -> Set[str]:
+    return set([str(f) for f in Path().iterdir() if f.is_file()])
+   

@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import sys
+from typing import Set
 
 import mock
 
@@ -19,8 +20,7 @@ def test_bulk_rename_cli():
 
             main()
 
-            files = set([str(f) for f in Path().iterdir()])
-            assert files == {'01 Niezwyciężony.mp3', '02 Niezwyciężony.mp3', '03 Niezwyciężony.mp3', 'some-other-file.txt'}
+            assert _list_files() == {'01 Niezwyciężony.mp3', '02 Niezwyciężony.mp3', '03 Niezwyciężony.mp3', 'some-0ther-file.txt'}
 
             for idx in range(3):
                 Path(f'0{idx+1} Niezwyciężony.mp3').unlink()
@@ -39,3 +39,7 @@ class MockIO:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self._mock_args.__exit__(exc_type, exc_value, traceback)
+
+
+def _list_files() -> Set[str]:
+    return set([str(f) for f in Path().iterdir() if f.is_file()])

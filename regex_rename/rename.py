@@ -14,7 +14,7 @@ def bulk_rename(
     testing: bool = True,
     full: bool = False,
     padding: int = 0,
-):
+) -> List[Match]:
     """
     Rename (or match) multiple files at once
     :param pattern: regex pattern to match filenames
@@ -28,17 +28,21 @@ def bulk_rename(
               pattern=pattern, replacement=replacement_pattern, full_match=full, 
               padding=padding, testing_mode=testing)
 
-    matched: List[Match] = match_files(Path(), pattern, replacement_pattern, full, padding)
-    for match in matched:
+    matches: List[Match] = match_files(Path(), pattern, replacement_pattern, full, padding)
+    for match in matches:
         match.log_info(testing)
 
+    if replacement_pattern:
+        find_duplicates(matches)
+
     if testing:
-        log.debug('files matched', count=len(matched))
+        log.debug('files matched', count=len(matches))
     elif replacement_pattern:
-        rename_matches(matched)
-        log.info('files renamed', count=len(matched))
+        rename_matches(matches)
+        log.info('files renamed', count=len(matches))
     else:
         raise RuntimeError('replacement pattern is required for renaming')
+    return matches
 
 
 def match_files(
@@ -49,9 +53,9 @@ def match_files(
     padding: int,
 ) -> List[Match]:
     filenames = sorted([str(f) for f in path.iterdir()])
-    matched = [match_filename(filename, pattern, replacement_pattern, full, padding) 
+    matches = [match_filename(filename, pattern, replacement_pattern, full, padding) 
                for filename in filenames]
-    return [m for m in matched if m is not None]
+    return [m for m in matches if m is not None]
 
 
 def match_filename(
@@ -66,7 +70,9 @@ def match_filename(
         log.warn('no match', file=filename)
         return None
 
-    group_dict: Dict[int, Optional[str]] = {index + 1: group for index, group in enumerate(re_match.groups())}
+    group_dict: Dict[int, Optional[str]] = {
+        index + 1: group for index, group in enumerate(re_match.groups())
+    }
     if padding:
         for index, group in group_dict.items():
             if type(group) == str and group.isnumeric():
@@ -85,17 +91,6 @@ def match_regex_string(pattern: str, filename: str, full: bool) -> Optional[re.M
         return re.fullmatch(pattern, filename)
     else:
         return re.search(pattern, filename)
-
-
-def rename_matches(matches: List[Match]):
-    names = [match.name_to for match in matches]
-    duplicates = [name for name in names if names.count(name) > 1]
-    if duplicates:
-        raise RuntimeError(f'found duplicate replacement filenames: {duplicates}')
-
-    for match in matches:
-        assert match.name_to
-        os.rename(match.name_from, match.name_to)
 
 
 def validate_replacement(re_match: re.Match, replacement_pattern: str):
@@ -118,3 +113,16 @@ def expand_replacement(
             new_name = new_name.replace(f'\\U\\{index}', group.upper())
         new_name = new_name.replace(f'\\{index}', group)
     return new_name
+
+
+def find_duplicates(matches: List[Match]):
+    names = [match.name_to for match in matches]
+    duplicates = set((name for name in names if names.count(name) > 1))
+    if duplicates:
+        raise RuntimeError(f'found duplicate replacement filenames: {list(duplicates)}')
+
+
+def rename_matches(matches: List[Match]):
+    for match in matches:
+        assert match.name_to
+        os.rename(match.name_from, match.name_to)

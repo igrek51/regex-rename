@@ -10,16 +10,17 @@ Bulk rename tool based on regular expressions to rename multiple files at once.
 Renaming multiple files at once:
 ```shell
 $ ls
-01.mp3  02.mp3
+01-q45XDS.mp3  02-QsEW2s.mp3  03-VF7t6L.mp3
 
-$ regex-rename --rename '(\d+).mp3' '\1_Greatest_Hits.mp3'
-[2021-03-04 00:27:23] [DEBUG] matching regex pattern testing_mode=False pattern=(\d+).mp3 replacement=\1_Greatest_Hits.mp3 full_match=False padding=None
-[2021-03-04 00:27:23] [INFO ] renaming file from=01.mp3 to=01_Greatest_Hits.mp3
-[2021-03-04 00:27:23] [INFO ] renaming file from=02.mp3 to=02_Greatest_Hits.mp3
-[2021-03-04 00:27:23] [INFO ] files renamed count=2
+$ regex-rename '(\d+).*.mp3' '\1_NeverGonnaGiveYouUp.mp3' --rename
+[2022-04-09 18:58:30] DEBUG matching regex pattern pattern=(\d+).*.mp3 replacement=\1_NeverGonnaGiveYouUp.mp3 full_match=False padding=None testing_mode=False
+[2022-04-09 18:58:30] INFO  renaming file from=01-q45XDS.mp3 to=01_NeverGonnaGiveYouUp.mp3
+[2022-04-09 18:58:30] INFO  renaming file from=02-QsEW2s.mp3 to=02_NeverGonnaGiveYouUp.mp3
+[2022-04-09 18:58:30] INFO  renaming file from=03-VF7t6L.mp3 to=03_NeverGonnaGiveYouUp.mp3
+[2022-04-09 18:58:30] INFO  files renamed count=3
 
 $ ls
-01_Greatest_Hits.mp3  02_Greatest_Hits.mp3
+01_NeverGonnaGiveYouUp.mp3  02_NeverGonnaGiveYouUp.mp3  03_NeverGonnaGiveYouUp.mp3
 ```
 
 # Installation
@@ -27,9 +28,7 @@ $ ls
 pip3 install regex-rename
 ```
 
-Requirements:
-
-* Python 3.6 (or newer) with pip
+It requires Python 3.7 (or newer) with pip.
 
 # Example
 
@@ -40,11 +39,12 @@ Imagine you've got audio files awfully named like this:
 - ...
 - `Stanis▯aw+Lem+Invincible+(51).mp3`
 
-and you want to rename all of them in a manner `01 The Invincible.mp3` (extracting number from the end and put it at the beginning and padding it to 2 digits by the way).
+and you want to rename all of them in a manner `01 The Invincible.mp3` 
+(extracting number from the end and put it at the beginning and padding it to 2 digits by the way).
 
 ## Step 1: Testing matching pattern 
 
-Our Regex pattern to match those files and extract number from parentheses should be like this: `.+\((\d+) ?\).+`
+The Regex pattern to match those files and extract number from parentheses should be like this: `.+\((\d+) ?\).+`
 
 Let's test matching pattern: `regex-rename '.+\((\d+) ?\).+'`  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-1.png?raw=true)    
@@ -64,7 +64,7 @@ All above commands were just testing our patterns so that we could experiment wi
 `regex-rename '.+\((\d+) ?\).+' '\1 The Invincible.mp3' --pad-to=2 --rename`  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-3.png?raw=true)  
 
-From now files are named properly:
+Finally, files are named properly:
 - `01 The Invincible.mp3`
 - `02 The Invincible.mp3`
 - `03 The Invincible.mp3`
@@ -76,7 +76,7 @@ enter `regex-rename` for help:
 
 ```shell
 $ regex-rename 
-regex-rename v0.1.1 (nuclear v1.1.5) - Regular expressions bulk rename tool for multiple files
+regex-rename v1.0.0 (nuclear v1.2.3) - Bulk rename tool based on regular expressions to rename multiple files at once
 
 Usage:
 regex-rename [OPTIONS] PATTERN [REPLACEMENT]
