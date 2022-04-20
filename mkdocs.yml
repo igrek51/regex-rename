@@ -1,0 +1,47 @@
+site_name: regex-rename
+repo_name: igrek51/regex-rename
+repo_url: https://github.com/igrek51/regex-rename
+site_author: igrek51
+docs_dir: .
+edit_uri: ''
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: black
+      accent: green
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.expand
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
+plugins:
+  - search
+  - same-dir
+  - exclude:
+      glob:
+        - venv/*
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/igrek51/regex-rename
+      name: regex-rename on GitHub
+
+nav:
+  - Home: README.md

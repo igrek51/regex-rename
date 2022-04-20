@@ -1,12 +1,14 @@
 # regex-rename
-Bulk rename tool based on regular expressions to rename multiple files at once.
 
 [![GitHub version](https://badge.fury.io/gh/igrek51%2Fregex-rename.svg)](https://github.com/igrek51/regex-rename)
 [![PyPI version](https://badge.fury.io/py/regex-rename.svg)](https://pypi.org/project/regex-rename)
 [![Build Status](https://travis-ci.org/igrek51/regex-rename.svg?branch=master)](https://travis-ci.org/igrek51/regex-rename)
 [![codecov](https://codecov.io/gh/igrek51/regex-rename/branch/master/graph/badge.svg)](https://codecov.io/gh/igrek51/regex-rename)
+[![Github Pages](https://img.shields.io/badge/docs-github.io-blue)](https://igrek51.github.io/regex-rename)
 
-# Quickstart
+Bulk rename tool based on regular expressions to rename multiple files at once.
+
+## Quickstart
 Renaming multiple files at once:
 ```shell
 $ ls # awful names:
@@ -23,16 +25,17 @@ $ ls # now we're talking:
 01_NeverGonnaGiveYouUp.mp3  02_NeverGonnaGiveYouUp.mp3  03_NeverGonnaGiveYouUp.mp3
 ```
 
-# Installation
+## Installation
 ```shell
 pip3 install regex-rename
 ```
 
 It requires Python 3.7 (or newer) with pip.
 
-# Example
+## Example
 
 Imagine you've got audio files awfully named like this:
+
 - `Stanis▯aw+Lem+Invincible+(1).mp3`
 - `Stanis▯aw+Lem+Invincible+(2 ).mp3`
 - `Stanisław_Lem_Invincible (3) .mp3`
@@ -44,7 +47,7 @@ and you want to rename all of them in a manner:
 (specifically to extract the number, put it at the beginning,
 and apply 2-digits padding to it).
 
-## Step 1: Check the matching pattern 
+### Step 1: Check the matching pattern 
 
 The Regex pattern to match these files and 
 extract episode number from parentheses may be as follows: 
@@ -56,7 +59,7 @@ Let's check if the files are matched properly: `regex-rename '(\d+).*mp3'`
 
 Pay attention to the extracted regex groups.
 
-## Step 2: Check the replacement pattern
+### Step 2: Check the replacement pattern
 
 We'd like to replace all files to a pattern: 
 `\1 The Invincible.mp3` 
@@ -68,7 +71,7 @@ Fortunately, we can use `--pad-to=2` parameter to obtain 2-digit numbers.
 Let's test it: `regex-rename '(\d+).*mp3' '\1 The Invincible.mp3' --pad-to=2`  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-2.png?raw=true)  
 
-## Step 3: Actual renaming
+### Step 3: Actual renaming
 
 All above commands were just testing our patterns so that we could experiment with regex patterns. 
 Once we're sure that everything is matched correctly, we can use `--rename` flag, 
@@ -77,14 +80,16 @@ which does the actual renaming:
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-3.png?raw=true)  
 
 Finally, files are named properly:
+
 - `01 The Invincible.mp3`
 - `02 The Invincible.mp3`
 - `03 The Invincible.mp3`
 - …
 - `51 The Invincible.mp3`
 
-# Beyond the Regex
+## Beyond the Regex
 `regex-rename` also supports some transformations not covered by regular expressions standard:
+
 - Converting to lowercase by adding `\L` before group number:  
 `regex-rename '([A-Z]+).mp3' '\L\1.mp3'`  
 eg. `AUDIO.mp3` to `audio.mp3`
@@ -98,7 +103,7 @@ eg. `1.mp3` to `01.mp3`
 `regex-rename '(\d+).mp3' '\1.mp3' --pad-to=2`  
 eg. `1.mp3` to `01.mp3`
 
-# More examples
+## More examples
 
 - Extract episode number:  
   `regex-rename '(\d+)' '\1.mp3' --rename`  
@@ -126,7 +131,7 @@ eg. `1.mp3` to `01.mp3`
   eg. `Pink Floyd/Echoes.mp3` to `Pink Floyd - Echoes.mp3`
 
 
-# Usage
+## Usage
 enter `regex-rename` for help:
 
 ```shell
