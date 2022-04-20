@@ -101,21 +101,30 @@ eg. `1.mp3` to `01.mp3`
 # More examples
 
 - Extract episode number:  
-  `regex-rename '(\d+)' '\1.mp3' --rename`
+  `regex-rename '(\d+)' '\1.mp3' --rename`  
+  eg. `episode12HQ.mp3` to `12.mp3`
 - Swap artist with title:  
-  `regex-rename '([^-]+) - ([^-]+)\.mp3' '\2 - \1.mp3' --rename`
+  `regex-rename '([^-]+) - ([^-]+)\.mp3' '\2 - \1.mp3' --rename`  
+  eg. `Echoes - Pink Floyd.mp3` to `Pink Floyd - Echoes.mp3`
 - Pad leading zeros:  
-  `regex-rename '(\d+).mp3' '\P3\1.mp3' --rename`
+  `regex-rename '(\d+).mp3' '\P3\1.mp3' --rename`  
+  eg. `1.mp3` to `001.mp3`
 - Convert to lowercase:  
-  `regex-rename '(.+)\.mp3' '\L\1.mp3' --rename`
+  `regex-rename '(.+)' '\L\1' --rename`  
+  eg. `SONG.MP3` to `song.mp3`
 - Convert to uppercase:  
-  `regex-rename '(.+)\.mp3' '\U\1.mp3' --rename`
+  `regex-rename '(.+)\.mp3' '\U\1.mp3' --rename`  
+  eg. `Tool.mp3` to `TOOL.mp3`
 - Add prefix:  
-  `regex-rename '(.+)' 'The \1' --full --rename`
+  `regex-rename '(.+)' 'The \1' --full --rename`  
+  eg. `Doors.mp3` to `The Doors.mp3`
 - Change extension:  
-  `regex-rename '(.+)\.apk' '\1.zip' --rename`
-- Turn directories into prefixes:  
-  `regex-rename '(.+)/(.+).mp3' '\1 - \2.mp3' --full --recursive --rename`
+  `regex-rename '(.+)\.apk' '\1.zip' --rename`  
+  eg. `Songbook.apk` to `Songbook.zip`
+- Turn directories into prefixes and move files:  
+  `regex-rename '(.+)/(.+).mp3' '\1 - \2.mp3' --full --recursive --rename`  
+  eg. `Pink Floyd/Echoes.mp3` to `Pink Floyd - Echoes.mp3`
+
 
 # Usage
 enter `regex-rename` for help:
