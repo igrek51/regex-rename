@@ -18,7 +18,7 @@ def main():
         flag('full', help='Enforces matching full filename against pattern'),
         flag('recursive', help='Search directories recursively'),
         parameter('pad-to', type=int, 
-                  help='Applies padding with zeros with given length on matched numerical groups'),
+                  help='Applies padding with leading zeros with given length on matched numerical groups'),
     ).run()
 
 

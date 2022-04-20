@@ -36,7 +36,7 @@ Imagine you've got audio files awfully named like this:
 - `Stanis▯aw+Lem+Invincible+(1).mp3`
 - `Stanis▯aw+Lem+Invincible+(2 ).mp3`
 - `Stanisław_Lem_Invincible (3) .mp3`
-- ...
+- …
 - `Stanis▯aw+Lem+Invincible+(51).mp3`
 
 and you want to rename all of them in a manner:
@@ -80,7 +80,7 @@ Finally, files are named properly:
 - `01 The Invincible.mp3`
 - `02 The Invincible.mp3`
 - `03 The Invincible.mp3`
-- ...
+- …
 - `51 The Invincible.mp3`
 
 # Beyond the Regex
@@ -91,7 +91,10 @@ eg. `AUDIO.mp3` to `audio.mp3`
 - Converting to uppercase by adding `\U` before group number:  
 `regex-rename '([a-z]+).mp3' '\U\1.mp3'`  
 eg. `audio.mp3` to `AUDIO.mp3`
-- Padding numbers with zeros by specifying `--pad-to` parameter:  
+- Padding numbers with leading zeros by adding `\P2`, `\P3`, … (depending on padding length) before group number:  
+`regex-rename '(\d+).mp3' '\P2\1.mp3'`  
+eg. `1.mp3` to `01.mp3`
+- Padding numbers with leading zeros by specifying `--pad-to` parameter:  
 `regex-rename '(\d+).mp3' '\1.mp3' --pad-to=2`  
 eg. `1.mp3` to `01.mp3`
 
@@ -102,7 +105,7 @@ eg. `1.mp3` to `01.mp3`
 - Swap artist with title:  
   `regex-rename '([^-]+) - ([^-]+)\.mp3' '\2 - \1.mp3' --rename`
 - Pad leading zeros:  
-  `regex-rename '(\d+).mp3' '\1.mp3' --pad-to=3 --rename`
+  `regex-rename '(\d+).mp3' '\P3\1.mp3' --rename`
 - Convert to lowercase:  
   `regex-rename '(.+)\.mp3' '\L\1.mp3' --rename`
 - Convert to uppercase:  

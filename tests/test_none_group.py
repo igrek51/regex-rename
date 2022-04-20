@@ -27,3 +27,9 @@ def test_file_without_none_group_padding():
                            padding=2)
     assert match is not None
     assert match.name_to == '01.txt'
+
+
+def test_prefix_padding_with_none():
+    match = match_filename('1.txt', r'(\d+)(XXX)?.txt', '\\1\\P2\\2.txt')
+    assert match is not None
+    assert match.name_to == '1.txt'
