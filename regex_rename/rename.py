@@ -13,6 +13,7 @@ def bulk_rename(
     replacement_pattern: Optional[str],
     testing: bool = True,
     full: bool = False,
+    recursive: bool = False,
     padding: int = 0,
 ) -> List[Match]:
     """
@@ -22,13 +23,15 @@ def bulk_rename(
     Use \\1 syntax to make use of matched groups
     :param testing: True - just testing replacement pattern, False - do actual renaming files
     :param full: whether to enforce matching full filename against pattern
+    :param recursive: whether to search directories recursively
     :param padding: applies padding with zeros with given length on matched numerical groups
     """
     log.debug('matching regex pattern',
               pattern=pattern, replacement=replacement_pattern, full_match=full, 
               padding=padding, testing_mode=testing)
 
-    matches: List[Match] = match_files(Path(), pattern, replacement_pattern, full, padding)
+    matches: List[Match] = match_files(Path(), pattern, replacement_pattern, 
+                                       recursive, full, padding)
     for match in matches:
         match.log_info(testing)
 
@@ -49,13 +52,25 @@ def match_files(
     path: Path,
     pattern: str,
     replacement_pattern: Optional[str],
+    recursive: bool,
     full: bool,
     padding: int,
 ) -> List[Match]:
-    filenames = sorted([str(f) for f in path.iterdir()])
+    files = list_files(path, recursive)
+    filenames = sorted([str(f) for f in files])
     matches = [match_filename(filename, pattern, replacement_pattern, full, padding) 
                for filename in filenames]
     return [m for m in matches if m is not None]
+
+
+def list_files(
+    path: Path,
+    recursive: bool,
+) -> List[Path]:
+    if recursive:
+        return [f.relative_to(path) for f in path.rglob("*") if f.is_file()]
+    else:
+        return [f for f in path.iterdir() if f.is_file()]
 
 
 def match_filename(
@@ -125,4 +140,5 @@ def find_duplicates(matches: List[Match]):
 def rename_matches(matches: List[Match]):
     for match in matches:
         assert match.name_to
-        os.rename(match.name_from, match.name_to)
+        Path(match.name_to).parent.mkdir(parents=True, exist_ok=True)
+        Path(match.name_from).rename(match.name_to)

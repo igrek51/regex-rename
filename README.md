@@ -95,6 +95,25 @@ eg. `audio.mp3` to `AUDIO.mp3`
 `regex-rename '(\d+).mp3' '\1.mp3' --pad-to=2`  
 eg. `1.mp3` to `01.mp3`
 
+# More examples
+
+- Extract episode number:  
+  `regex-rename '(\d+)' '\1.mp3' --rename`
+- Swap artist with title:  
+  `regex-rename '([^-]+) - ([^-]+)\.mp3' '\2 - \1.mp3' --rename`
+- Pad leading zeros:  
+  `regex-rename '(\d+).mp3' '\1.mp3' --pad-to=3 --rename`
+- Convert to lowercase:  
+  `regex-rename '(.+)\.mp3' '\L\1.mp3' --rename`
+- Convert to uppercase:  
+  `regex-rename '(.+)\.mp3' '\U\1.mp3' --rename`
+- Add prefix:  
+  `regex-rename '(.+)' 'The \1' --full --rename`
+- Change extension:  
+  `regex-rename '(.+)\.apk' '\1.zip' --rename`
+- Turn directories into prefixes:  
+  `regex-rename '(.+)/(.+).mp3' '\1 - \2.mp3' --full --recursive --rename`
+
 # Usage
 enter `regex-rename` for help:
 
@@ -114,5 +133,6 @@ Options:
   -h, --help [SUBCOMMANDS...] - Display this help and exit
   -r, --rename                - Does actual renaming files instead of just testing replacement pattern
   --full                      - Enforces matching full filename against pattern
+  --recursive                 - Search directories recursively
   --pad-to PAD_TO             - Applies padding with zeros with given length on matched numerical groups
 ```
