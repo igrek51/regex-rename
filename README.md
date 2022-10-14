@@ -34,25 +34,23 @@ It requires Python 3.7 (or newer) with pip.
 
 ## Example
 
-Imagine you've got audio files awfully named like this:
+Imagine you've got audio files awfully named like this and you want to rename them:
 
-- `Stanis▯aw+Lem+Invincible+(1).mp3`
-- `Stanis▯aw+Lem+Invincible+(2 ).mp3`
-- `Stanisław_Lem_Invincible (3) .mp3`
+- `Stanis▯aw+Lem+Invincible+(1).mp3` -> `01 The Invincible.mp3`
+- `Stanis▯aw+Lem+Invincible+(2 ).mp3` -> `02 The Invincible.mp3`
+- `Stanisław_Lem_Invincible (3) .mp3` -> `03 The Invincible.mp3`
 - …
-- `Stanis▯aw+Lem+Invincible+(51).mp3`
+- `Stanis▯aw+Lem+Invincible+(51).mp3` -> `51 The Invincible.mp3`
 
-and you want to rename all of them in a manner:
-`01 The Invincible.mp3`, `02 The Invincible.mp3`, …
-(specifically to extract the number, put it at the beginning,
-and apply 2-digits padding to it).
+Specifically, you want to extract the episode number, move it at the beginning,
+and apply a 2-digit padding to it.
 
 ### Step 1: Check the matching pattern 
 
 The Regex pattern to match these files and 
 extract episode number from parentheses may be as follows: 
 `(\d+).*mp3` 
-(contains number, ends with `mp3`)
+(it contains a number and ends with `mp3`)
 
 Let's check if the files are matched properly: `regex-rename '(\d+).*mp3'`  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-1.png?raw=true)
@@ -68,7 +66,7 @@ We'd like to replace all files to a pattern:
 Regex can't easily pad numbers with zeros. 
 Fortunately, we can use `--pad-to=2` parameter to obtain 2-digit numbers.
 
-Let's test it: `regex-rename '(\d+).*mp3' '\1 The Invincible.mp3' --pad-to=2`  
+Let's test it by adding the replacement pattern: `regex-rename '(\d+).*mp3' '\1 The Invincible.mp3' --pad-to=2`  
 ![Usage example](https://github.com/igrek51/regex-rename/blob/master/docs/img/screen-2.png?raw=true)  
 
 ### Step 3: Actual renaming
@@ -144,7 +142,6 @@ eg. `1.mp3` to `01.mp3`
   ```shell
   regex-rename '(.+)/(.+).mp3' '\1 - \2.mp3' --full --recursive --rename
   ```
-  
 
 
 ## Usage

@@ -42,6 +42,12 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/igrek51/regex-rename
       name: regex-rename on GitHub
+extra_css:
+  - docs/css/termynal.css
+  - docs/css/custom.css
+extra_javascript:
+  - docs/js/termynal.js
+  - docs/js/custom.js
 
 nav:
-  - Home: README.md
+  - Home: index.md
