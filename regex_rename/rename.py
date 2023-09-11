@@ -1,5 +1,3 @@
-from ast import Str
-import os
 import re
 from pathlib import Path
 from typing import Dict, Optional, List
@@ -76,7 +74,7 @@ def list_files(
     recursive: bool,
 ) -> List[Path]:
     if recursive:
-        return [f.relative_to(path) for f in path.rglob("*") if f.is_file()]
+        return [f.relative_to(path) for f in path.rglob("*")]
     else:
         return [f for f in path.iterdir() if f.is_file()]
 
