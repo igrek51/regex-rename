@@ -183,6 +183,12 @@ eg. `1.mp3` to `01.mp3`
   ```shell
   regex-rename '(.+)/(.+).mp3' '\1 - \2.mp3' --full --recursive --rename
   ```
+  
+- Rename files in different directories, preserving their parent directories,
+  eg. `app/logs/file-001.log` to `app/logs/file_001.txt`:  
+  ```shell
+  regex-rename '(.*)/file-([0-9]+).log' '\1/file_\2.txt' --full --recursive --rename
+  ```
 
 
 ## Usage
