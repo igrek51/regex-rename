@@ -6,3 +6,4 @@ twine
 wheel
 mkdocs
 coveralls
+mypy

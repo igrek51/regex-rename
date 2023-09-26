@@ -1,16 +1,19 @@
 import re
 from pathlib import Path
-from typing import Dict, Optional, List
+import os
+import select
+import sys
+from typing import Dict, Optional, List, Iterable
 
 from nuclear.sublog import log
 
-from regex_rename.match import Match
+from regex_rename.match import Match, log_match_info
 
 
 def bulk_rename(
-    pattern: str,
+    match_pattern: str,
     replacement_pattern: Optional[str],
-    testing: bool = True,
+    dry_run: bool = True,
     full: bool = False,
     recursive: bool = False,
     padding: int = 0,
@@ -20,24 +23,29 @@ def bulk_rename(
     :param pattern: regex pattern to match filenames
     :param replacement: replacement regex pattern for renamed files. 
     Use \\1 syntax to make use of matched groups
-    :param testing: True - just testing replacement pattern, False - do actual renaming files
+    :param dry_run: True - just testing replacement pattern, False - do actual renaming files
     :param full: whether to enforce matching full filename against pattern
     :param recursive: whether to search directories recursively
     :param padding: applies padding with zeros with given length on matched numerical groups
     """
-    log.debug('matching regex pattern',
-              pattern=pattern, replacement=replacement_pattern, testing_mode=testing,
-              full_match=full, recursive=recursive, padding=padding)
+    if not dry_run and not replacement_pattern:
+        raise RuntimeError('replacement pattern is required for actual renaming')
 
-    matches: List[Match] = match_files(Path(), pattern, replacement_pattern, 
-                                       recursive, full, padding)
-    for match in matches:
-        match.log_info(testing)
+    log.debug('matching regex pattern',
+              pattern=match_pattern, replacement=replacement_pattern, dry_run=dry_run,
+              full_match=full, recursive=recursive, padding=padding)
+    input_files: Iterable[Path] = get_input_files(recursive=recursive)
+    unmatched: List[str] = []
+    matches_iterator: Iterable[Match] = match_files(input_files, match_pattern, replacement_pattern,
+                                                    full=full, padding=padding, unmatched=unmatched)
+    matches: List[Match] = process_matches(matches_iterator, dry_run=dry_run)
 
     if replacement_pattern:
-        find_duplicates(matches)
+        check_duplicates(matches)
 
-    if testing:
+    if unmatched:
+        log.warn('some files were not matched', count=len(unmatched), unmatched=_format_short_list(unmatched))
+    if dry_run:
         if matches:
             log.info('files matched', count=len(matches))
         else:
@@ -48,47 +56,60 @@ def bulk_rename(
             log.info('files renamed', count=len(matches))
         else:
             log.info('no files renamed', count=len(matches))
-    else:
-        raise RuntimeError('replacement pattern is required for renaming')
-        
+
     return matches
 
 
-def match_files(
-    path: Path,
-    pattern: str,
-    replacement_pattern: Optional[str],
-    recursive: bool,
-    full: bool,
-    padding: int,
-) -> List[Match]:
-    files = list_files(path, recursive)
-    filenames = sorted([str(f) for f in files])
-    matches = [match_filename(filename, pattern, replacement_pattern, full, padding) 
-               for filename in filenames]
-    return [m for m in matches if m is not None]
+def get_input_files(
+    root: Optional[Path] = None,
+    recursive: bool = False,
+) -> Iterable[Path]:
+    try:
+        stdin_fileno: int = sys.stdin.fileno()
+        if not os.isatty(stdin_fileno):  # files piped through stdin
+            if select.select([sys.stdin, ], [], [], 0.0)[0]:
+                log.debug('reading input files from stdin')
+                for line in sys.stdin:
+                    yield Path(line.strip())
+                return
+    except BaseException as e:
+        log.warn(f"Can't read from stdin: {e}")
+    
+    if not root:
+        root = Path()
 
-
-def list_files(
-    path: Path,
-    recursive: bool,
-) -> List[Path]:
     if recursive:
-        return [f.relative_to(path) for f in path.rglob("*")]
+        yield from sorted(f.relative_to(root) for f in root.rglob("*"))
     else:
-        return [f for f in path.iterdir() if f.is_file()]
+        yield from sorted(f for f in root.iterdir())
+
+
+def match_files(
+    files: Iterable[Path],
+    match_pattern: str,
+    replacement_pattern: Optional[str] = None,
+    full: bool = False,
+    padding: int = 0,
+    unmatched: List[str] = [],
+) -> Iterable[Match]:
+    for file in files:
+        filename = str(file)
+        match: Optional[Match] = match_filename(filename, match_pattern, replacement_pattern, full, padding) 
+        if match is None:
+            unmatched.append(filename)
+        else:
+            yield match
 
 
 def match_filename(
     filename: str,
-    pattern: str, 
+    match_pattern: str, 
     replacement_pattern: Optional[str], 
     full: bool = False, 
     padding: int = 0,
 ) -> Optional[Match]:
-    re_match = match_regex_string(pattern, filename, full)
+    re_match = match_regex_string(match_pattern, filename, full)
     if not re_match:
-        log.warn('no match', file=filename)
         return None
 
     group_dict: Dict[int, Optional[str]] = {
@@ -118,6 +139,13 @@ def apply_numeric_padding(group_dict: Dict[int, Optional[str]], padding: int):
                 group_dict[index] = group.zfill(padding)
 
 
+def validate_replacement(re_match: re.Match, replacement_pattern: str):
+    """Test if it's valid in terms of regex rules"""
+    simplified = replacement_pattern.replace('\\L', '').replace('\\U', '')
+    simplified = re.sub(r'\\P(\d+)', '', simplified)
+    re_match.expand(simplified)
+
+
 def expand_numeric_padding_prefix(
     name: str,
     group_dict: Dict[int, Optional[str]],
@@ -142,13 +170,6 @@ def expand_numeric_padding_prefix(
     return name
 
 
-def validate_replacement(re_match: re.Match, replacement_pattern: str):
-    """Test if it's valid in terms of regex rules"""
-    simplified = replacement_pattern.replace('\\L', '').replace('\\U', '')
-    simplified = re.sub(r'\\P(\d+)', '', simplified)
-    re_match.expand(simplified)
-
-
 def expand_replacement(
     replacement_pattern: str,
     group_dict: Dict[int, Optional[str]],
@@ -170,11 +191,22 @@ def expand_replacement(
     return new_name
 
 
-def find_duplicates(matches: List[Match]):
+def process_matches(
+    matches_iterator: Iterable[Match],
+    dry_run: bool,
+) -> List[Match]:
+    matches: List[Match] = []
+    for match in matches_iterator:
+        log_match_info(match, dry_run)
+        matches.append(match)
+    return matches
+
+
+def check_duplicates(matches: List[Match]):
     names = [match.name_to for match in matches]
     duplicates = set((name for name in names if names.count(name) > 1))
     if duplicates:
-        raise RuntimeError(f'found duplicate replacement filenames: {list(duplicates)}')
+        raise RuntimeError(f'found duplicate filenames after replacement: {list(duplicates)}')
 
 
 def rename_matches(matches: List[Match]):
@@ -182,3 +214,11 @@ def rename_matches(matches: List[Match]):
         assert match.name_to
         Path(match.name_to).parent.mkdir(parents=True, exist_ok=True)
         Path(match.name_from).rename(match.name_to)
+
+
+def _format_short_list(items: List[str]) -> str:
+    if len(items) <= 10:
+        items = items[:10]
+        return ', '.join(items) + '…'
+    else:
+        return ', '.join(items)
