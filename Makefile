@@ -22,9 +22,10 @@ clean:
 	rm -rf dist/
 	rm -rf ./*.egg-info
 
+# use token from .pypirc
 release-pypi: clean
 	python3 setup.py sdist bdist_wheel
-	python3 -m twine upload dist/*
+	python3 -m twine upload -u __token__ dist/*
 
 mkdocs-local:
 	mkdocs serve
