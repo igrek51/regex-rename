@@ -1,0 +1,21 @@
+name: test
+on:
+  push
+
+jobs:
+
+  test-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - name: Install dependencies
+        run: make setup-test-unit
+      - run: . venv/bin/activate && make test
+      
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2

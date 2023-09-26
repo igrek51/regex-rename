@@ -4,6 +4,5 @@ coverage
 setuptools
 twine
 wheel
-mkdocs
 coveralls
 mypy

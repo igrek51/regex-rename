@@ -31,7 +31,7 @@ def bulk_rename(
     if not dry_run and not replacement_pattern:
         raise RuntimeError('replacement pattern is required for actual renaming')
 
-    log.debug('matching a regular expression pattern to files',
+    log.debug('matching regular expression pattern to files:',
               pattern=match_pattern, replacement=replacement_pattern, dry_run=dry_run,
               full_match=full, recursive=recursive, padding=padding)
     input_files: Iterable[Path] = get_input_files(recursive=recursive)
@@ -44,18 +44,18 @@ def bulk_rename(
         check_duplicates(matches)
 
     if mismatched:
-        log.warn('some files did not match the pattern', count=len(mismatched), mismatched_names=_format_short_list(mismatched))
+        log.warn('some files did not match the pattern:', count=len(mismatched), mismatched_names=_format_short_list(mismatched))
     if dry_run:
         if matches:
-            log.info('files matched the pattern', matched=len(matches), mismatched=len(mismatched))
+            log.info('files matched the pattern:', matched=len(matches), mismatched=len(mismatched))
         else:
-            log.info('no files match the pattern', matched=len(matches), mismatched=len(mismatched))
+            log.warn('no files match the pattern:', matched=len(matches), mismatched=len(mismatched))
     elif replacement_pattern:
         rename_matches(matches)
         if matches:
-            log.info('files renamed', renamed=len(matches), mismatched=len(mismatched))
+            log.info('files renamed:', renamed=len(matches), mismatched=len(mismatched))
         else:
-            log.info('no files match the pattern', matched=len(matches), mismatched=len(mismatched))
+            log.warn('no files match the pattern:', matched=len(matches), mismatched=len(mismatched))
 
     return matches
 
@@ -73,7 +73,7 @@ def get_input_files(
                     yield Path(line.strip())
                 return
     except BaseException as e:
-        log.warn(f"Can't read from stdin: {e}")
+        log.error(f"Can't read from stdin: {e}")
     
     if not root:
         root = Path()
