@@ -31,31 +31,31 @@ def bulk_rename(
     if not dry_run and not replacement_pattern:
         raise RuntimeError('replacement pattern is required for actual renaming')
 
-    log.debug('matching regex pattern',
+    log.debug('matching a regular expression pattern to files',
               pattern=match_pattern, replacement=replacement_pattern, dry_run=dry_run,
               full_match=full, recursive=recursive, padding=padding)
     input_files: Iterable[Path] = get_input_files(recursive=recursive)
-    unmatched: List[str] = []
+    mismatched: List[str] = []
     matches_iterator: Iterable[Match] = match_files(input_files, match_pattern, replacement_pattern,
-                                                    full=full, padding=padding, unmatched=unmatched)
+                                                    full=full, padding=padding, mismatched=mismatched)
     matches: List[Match] = process_matches(matches_iterator, dry_run=dry_run)
 
     if replacement_pattern:
         check_duplicates(matches)
 
-    if unmatched:
-        log.warn('some files were not matched', count=len(unmatched), unmatched=_format_short_list(unmatched))
+    if mismatched:
+        log.warn('some files did not match the pattern', count=len(mismatched), mismatched_names=_format_short_list(mismatched))
     if dry_run:
         if matches:
-            log.info('files matched', count=len(matches))
+            log.info('files matched the pattern', matched=len(matches), mismatched=len(mismatched))
         else:
-            log.info('no files matched', count=len(matches))
+            log.info('no files match the pattern', matched=len(matches), mismatched=len(mismatched))
     elif replacement_pattern:
         rename_matches(matches)
         if matches:
-            log.info('files renamed', count=len(matches))
+            log.info('files renamed', renamed=len(matches), mismatched=len(mismatched))
         else:
-            log.info('no files renamed', count=len(matches))
+            log.info('no files match the pattern', matched=len(matches), mismatched=len(mismatched))
 
     return matches
 
@@ -79,9 +79,15 @@ def get_input_files(
         root = Path()
 
     if recursive:
-        yield from sorted(f.relative_to(root) for f in root.rglob("*"))
+        yield from sorted(
+            (f.relative_to(root) for f in root.rglob("*")),
+            key=lambda f: (f.is_dir(), f.as_posix()),  # rename folders in the end
+        )
     else:
-        yield from sorted(f for f in root.iterdir())
+        yield from sorted(
+            (f for f in root.iterdir()),
+            key=lambda f: (f.is_dir(), f.as_posix()),
+        )
 
 
 def match_files(
@@ -90,13 +96,13 @@ def match_files(
     replacement_pattern: Optional[str] = None,
     full: bool = False,
     padding: int = 0,
-    unmatched: List[str] = [],
+    mismatched: List[str] = [],
 ) -> Iterable[Match]:
     for file in files:
         filename = str(file)
         match: Optional[Match] = match_filename(filename, match_pattern, replacement_pattern, full, padding) 
         if match is None:
-            unmatched.append(filename)
+            mismatched.append(filename)
         else:
             yield match
 
@@ -203,10 +209,11 @@ def process_matches(
 
 
 def check_duplicates(matches: List[Match]):
-    names = [match.name_to for match in matches]
+    names: List[str] = [match.name_to for match in matches if match.name_to]
     duplicates = set((name for name in names if names.count(name) > 1))
     if duplicates:
-        raise RuntimeError(f'found duplicate filenames after replacement: {list(duplicates)}')
+        duplicates_desc = ', '.join(sorted(duplicates))
+        raise RuntimeError(f'aborting - found duplicate filenames after replacement: {duplicates_desc}')
 
 
 def rename_matches(matches: List[Match]):
@@ -217,8 +224,8 @@ def rename_matches(matches: List[Match]):
 
 
 def _format_short_list(items: List[str]) -> str:
-    if len(items) <= 10:
-        items = items[:10]
-        return ', '.join(items) + '…'
+    if len(items) > 20:
+        items = items[:20]
+        return ', '.join(items) + ', …'
     else:
         return ', '.join(items)
