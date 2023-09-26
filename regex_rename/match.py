@@ -12,12 +12,13 @@ class Match:
     groups: Dict[int, Optional[str]]
     re_match: re.Match
 
-    def log_info(self, testing: bool):
-        group_kwargs = {f'group_{idx}': group for idx, group in self.groups.items()}
-        if self.name_to is None:
-            log.info('matched file', file=self.name_from, **group_kwargs)
+
+def log_match_info(match: Match, dry_run: bool):
+    group_kwargs = {f'group_{idx}': group for idx, group in match.groups.items()}
+    if match.name_to is None:
+        log.info('matched file:', file=match.name_from, **group_kwargs)
+    else:
+        if dry_run:
+            log.info('matched file:', **{'from': match.name_from, 'to': match.name_to}, **group_kwargs)
         else:
-            if testing:
-                log.info('matched file', **{'from': self.name_from, 'to': self.name_to}, **group_kwargs)
-            else:
-                log.info('renaming file', **{'from': self.name_from, 'to': self.name_to})
+            log.info('renaming file:', **{'from': match.name_from, 'to': match.name_to})
