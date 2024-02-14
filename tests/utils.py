@@ -2,19 +2,33 @@ import re
 import sys
 from io import StringIO
 import logging
+from typing import Optional
+
+from nuclear.sublog import init_logs
 
 
 class StdoutCap:
     def __init__(self):
+        init_logs()
+        logger = logging.getLogger('nuclear.sublog')
+        logger.setLevel(logging.DEBUG)
+        logger.propagate = False
+        self.extra_handler = logging.getLogger().handlers[0]
+        self.extra_handler.setLevel(logging.DEBUG)
+        formatter = logging.getLogger().handlers[0].formatter
+        self.extra_handler.setFormatter(formatter)
+        logger.addHandler(self.extra_handler)
+
         # mock output
         self.new_out, self.new_err = StringIO(), StringIO()
         self.old_out, self.old_err = sys.stdout, sys.stderr
 
         # capture output from loggers
-        self.logger = logging.getLogger('nuclear.sublog')
         self.old_handler, self.new_handler = None, None
-        if self.logger.hasHandlers():
-            self.old_handler = self.logger.handlers[0]
+        self.logger = logger
+        handler = get_logger_handler(self.logger)
+        if handler is not None:
+            self.old_handler = handler
             self.new_handler = logging.StreamHandler(self.new_out)
             self.new_handler.setLevel(self.old_handler.level)
             self.new_handler.setFormatter(self.old_handler.formatter)
@@ -63,3 +77,15 @@ def assert_multiline_match(text: str, regex_pattern: str):
 
 def remove_ansi_sequences(text: str) -> str:
     return re.sub(r'\x1b\[\d+(;\d+)?m', '', text)
+
+
+def get_logger_handler(logger: logging.Logger) -> Optional[logging.Handler]:
+    c = logger
+    while c:
+        if c.handlers:
+            return c.handlers[0]
+        if not c.propagate:
+            return None
+        else:
+            c = c.parent
+    return None

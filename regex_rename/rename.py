@@ -5,7 +5,7 @@ import select
 import sys
 from typing import Dict, Optional, List, Iterable
 
-from nuclear.sublog import log
+from nuclear.sublog import logger
 
 from regex_rename.match import Match, log_match_info
 
@@ -31,7 +31,7 @@ def bulk_rename(
     if not dry_run and not replacement_pattern:
         raise RuntimeError('replacement pattern is required for actual renaming')
 
-    log.debug('matching regular expression pattern to files:',
+    logger.debug('matching regular expression pattern to files:',
               pattern=match_pattern, replacement=replacement_pattern, dry_run=dry_run,
               full_match=full, recursive=recursive, padding=padding)
     input_files: Iterable[Path] = get_input_files(recursive=recursive)
@@ -44,18 +44,18 @@ def bulk_rename(
         check_duplicates(matches)
 
     if mismatched:
-        log.warn('some files did not match the pattern:', count=len(mismatched), mismatched_names=_format_short_list(mismatched))
+        logger.warn('some files did not match the pattern:', count=len(mismatched), mismatched_names=_format_short_list(mismatched))
     if dry_run:
         if matches:
-            log.info('files matched the pattern:', matched=len(matches), mismatched=len(mismatched))
+            logger.info('files matched the pattern:', matched=len(matches), mismatched=len(mismatched))
         else:
-            log.warn('no files match the pattern:', matched=len(matches), mismatched=len(mismatched))
+            logger.warn('no files match the pattern:', matched=len(matches), mismatched=len(mismatched))
     elif replacement_pattern:
         rename_matches(matches)
         if matches:
-            log.info('files renamed:', renamed=len(matches), mismatched=len(mismatched))
+            logger.info('files renamed:', renamed=len(matches), mismatched=len(mismatched))
         else:
-            log.warn('no files match the pattern:', matched=len(matches), mismatched=len(mismatched))
+            logger.warn('no files match the pattern:', matched=len(matches), mismatched=len(mismatched))
 
     return matches
 
@@ -68,12 +68,12 @@ def get_input_files(
         stdin_fileno: int = sys.stdin.fileno()
         if not os.isatty(stdin_fileno):  # files piped through stdin
             if select.select([sys.stdin, ], [], [], 0.0)[0]:
-                log.debug('reading input files from stdin')
+                logger.debug('reading input files from stdin')
                 for line in sys.stdin:
                     yield Path(line.strip())
                 return
     except BaseException as e:
-        log.error(f"Can't read from stdin: {e}")
+        logger.error(f"Can't read from stdin: {e}")
     
     if not root:
         root = Path()

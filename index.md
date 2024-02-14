@@ -201,7 +201,7 @@ Enter `regex-rename` for help:
 
 ```shell
 $ regex-rename 
-regex-rename v1.2.0 (nuclear v1.2.3) - Bulk rename tool based on regular expressions to rename multiple files at once
+regex-rename v1.2.0 - Bulk rename tool based on regular expressions to rename multiple files at once
 
 Usage:
 regex-rename [OPTIONS] PATTERN [REPLACEMENT]

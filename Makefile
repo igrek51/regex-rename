@@ -5,17 +5,17 @@ setup:
 	. venv/bin/activate &&\
 	pip install --upgrade pip setuptools &&\
 	pip install -r requirements.txt -r requirements-dev.txt -r requirements-docs.txt &&\
-	python setup.py develop
+	python -m pip install -e .
 
 setup-test-unit:
-	python3 -m venv venv &&\
+	python -m venv venv &&\
 	. venv/bin/activate &&\
 	pip install -r requirements.txt -r requirements-dev.txt &&\
-	python setup.py develop
+	python -m pip install -e .
 
 test:
-	python3 -m coverage run --source regex_rename -m pytest -vv --tb=short -ra --color=yes $(test)
-	python3 -m coverage report --show-missing --skip-empty --skip-covered
+	python -m coverage run --source regex_rename -m pytest -vv --tb=short -ra --color=yes $(test)
+	python -m coverage report --show-missing --skip-empty --skip-covered
 
 clean:
 	rm -rf build/
