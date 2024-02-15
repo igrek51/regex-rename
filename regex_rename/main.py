@@ -18,6 +18,7 @@ def main():
         flag('rename', 'r', help='Does actual file renaming instead of dry-run (testing) mode'),
         flag('full', help='Enforce matching full filename against pattern'),
         flag('recursive', help='Search directories recursively'),
+        flag('collate', help='Compare source filenames with the replaced names'),
         parameter('pad-to', type=int, 
                   help='Applies padding with leading zeros with given length on matched numerical groups'),
     ).run()
@@ -29,7 +30,8 @@ def _bulk_rename(
     rename: bool = False,
     full: bool = False,
     recursive: bool = False,
+    collate: bool = False,
     pad_to: int = 0,
 ):
     bulk_rename(pattern, replacement, dry_run=not rename, full=full, 
-                recursive=recursive, padding=pad_to)
+                recursive=recursive, collate=collate, padding=pad_to)

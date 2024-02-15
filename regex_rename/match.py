@@ -13,12 +13,15 @@ class Match:
     re_match: re.Match
 
 
-def log_match_info(match: Match, dry_run: bool):
+def log_match_info(match: Match, dry_run: bool, collate: bool):
     group_kwargs = {f'group_{idx}': group for idx, group in match.groups.items()}
     if match.name_to is None:
         logger.info('matched file:', file=match.name_from, **group_kwargs)
     else:
-        if dry_run:
+        if collate:
+            print(f'- from: {match.name_from}')
+            print(f'    to: {match.name_to}')
+        elif dry_run:
             logger.info('matched file:', **{'from': match.name_from, 'to': match.name_to}, **group_kwargs)
         else:
             logger.info('renaming file:', **{'from': match.name_from, 'to': match.name_to})
