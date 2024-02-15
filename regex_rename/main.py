@@ -1,6 +1,7 @@
 from typing import Optional
 
 from nuclear import CliBuilder, argument, flag, parameter
+from regex_rename.logging import set_short_logs_format
 
 from regex_rename.params import RenameParams
 from regex_rename.rename import bulk_rename
@@ -20,6 +21,7 @@ def main():
         flag('full', help='Enforce matching full filename against pattern'),
         flag('recursive', help='Search directories recursively'),
         flag('collate', help='Compare source filenames with the replaced names'),
+        flag('short', help='Print output in short, less verbose format without time'),
         parameter('pad-to', type=int, 
                   help='Applies padding with leading zeros with given length on matched numerical groups'),
     ).run()
@@ -32,8 +34,11 @@ def _bulk_rename(
     full: bool = False,
     recursive: bool = False,
     collate: bool = False,
+    short: bool = False,
     pad_to: int = 0,
 ):
+    if short:
+        set_short_logs_format()
     params = RenameParams(
         match_pattern=pattern,
         replacement_pattern=replacement,
