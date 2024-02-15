@@ -160,7 +160,7 @@ Enter `regex-rename` for help:
 
 ```shell
 $ regex-rename 
-regex-rename v1.2.0 - Bulk rename tool based on regular expressions to rename multiple files at once
+regex-rename v1.3.0 - Bulk rename tool based on regular expressions to rename multiple files at once
 
 Usage:
 regex-rename [OPTIONS] PATTERN [REPLACEMENT]
@@ -175,5 +175,6 @@ Options:
   -r, --rename                - Does actual renaming files instead of just testing replacement pattern
   --full                      - Enforces matching full filename against pattern
   --recursive                 - Search directories recursively
+  --collate                   - Compare source filenames with the replaced names
   --pad-to PAD_TO             - Applies padding with zeros with given length on matched numerical groups
 ```

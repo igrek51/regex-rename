@@ -16,6 +16,7 @@ def bulk_rename(
     dry_run: bool = True,
     full: bool = False,
     recursive: bool = False,
+    collate: bool = False,
     padding: int = 0,
 ) -> List[Match]:
     """
@@ -38,7 +39,7 @@ def bulk_rename(
     mismatched: List[str] = []
     matches_iterator: Iterable[Match] = match_files(input_files, match_pattern, replacement_pattern,
                                                     full=full, padding=padding, mismatched=mismatched)
-    matches: List[Match] = process_matches(matches_iterator, dry_run=dry_run)
+    matches: List[Match] = process_matches(matches_iterator, dry_run=dry_run, collate=collate)
 
     if replacement_pattern:
         check_duplicates(matches)
@@ -200,10 +201,11 @@ def expand_replacement(
 def process_matches(
     matches_iterator: Iterable[Match],
     dry_run: bool,
+    collate: bool,
 ) -> List[Match]:
     matches: List[Match] = []
     for match in matches_iterator:
-        log_match_info(match, dry_run)
+        log_match_info(match, dry_run, collate)
         matches.append(match)
     return matches
 
