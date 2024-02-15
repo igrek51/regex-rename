@@ -2,6 +2,7 @@ from typing import Optional
 
 from nuclear import CliBuilder, argument, flag, parameter
 
+from regex_rename.params import RenameParams
 from regex_rename.rename import bulk_rename
 from regex_rename.version import __version__
 
@@ -33,5 +34,13 @@ def _bulk_rename(
     collate: bool = False,
     pad_to: int = 0,
 ):
-    bulk_rename(pattern, replacement, dry_run=not rename, full=full, 
-                recursive=recursive, collate=collate, padding=pad_to)
+    params = RenameParams(
+        match_pattern=pattern,
+        replacement_pattern=replacement,
+        dry_run=not rename,
+        full=full,
+        recursive=recursive,
+        collate=collate,
+        padding=pad_to,
+    )
+    bulk_rename(params)
