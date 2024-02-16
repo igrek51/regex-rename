@@ -23,7 +23,7 @@ clean:
 	rm -rf ./*.egg-info
 
 # use token from .pypirc
-release-pypi: clean
+release: clean
 	python3 setup.py sdist bdist_wheel
 	python3 -m twine upload -u __token__ dist/*
 
