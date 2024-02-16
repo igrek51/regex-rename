@@ -8,16 +8,11 @@ from typing import Dict, Optional, List, Iterable
 from nuclear.sublog import logger
 
 from regex_rename.match import Match, log_match_info
+from regex_rename.params import RenameParams
 
 
 def bulk_rename(
-    match_pattern: str,
-    replacement_pattern: Optional[str],
-    dry_run: bool = True,
-    full: bool = False,
-    recursive: bool = False,
-    collate: bool = False,
-    padding: int = 0,
+    params: RenameParams,
 ) -> List[Match]:
     """
     Rename (or match) multiple files at once
@@ -29,29 +24,29 @@ def bulk_rename(
     :param recursive: whether to search directories recursively
     :param padding: applies padding with zeros with given length on matched numerical groups
     """
-    if not dry_run and not replacement_pattern:
+    if not params.dry_run and not params.replacement_pattern:
         raise RuntimeError('replacement pattern is required for actual renaming')
 
     logger.debug('matching regular expression pattern to files:',
-              pattern=match_pattern, replacement=replacement_pattern, dry_run=dry_run,
-              full_match=full, recursive=recursive, padding=padding)
-    input_files: Iterable[Path] = get_input_files(recursive=recursive)
+              pattern=params.match_pattern, replacement=params.replacement_pattern, dry_run=params.dry_run,
+              full_match=params.full, recursive=params.recursive, padding=params.padding)
+    input_files: Iterable[Path] = get_input_files(recursive=params.recursive)
     mismatched: List[str] = []
-    matches_iterator: Iterable[Match] = match_files(input_files, match_pattern, replacement_pattern,
-                                                    full=full, padding=padding, mismatched=mismatched)
-    matches: List[Match] = process_matches(matches_iterator, dry_run=dry_run, collate=collate)
+    matches_iterator: Iterable[Match] = match_files(input_files, params.match_pattern, params.replacement_pattern,
+                                                    full=params.full, padding=params.padding, mismatched=mismatched)
+    matches: List[Match] = process_matches(matches_iterator, dry_run=params.dry_run, collate=params.collate)
 
-    if replacement_pattern:
+    if params.replacement_pattern:
         check_duplicates(matches)
 
     if mismatched:
         logger.warn('some files did not match the pattern:', count=len(mismatched), mismatched_names=_format_short_list(mismatched))
-    if dry_run:
+    if params.dry_run:
         if matches:
             logger.info('files matched the pattern:', matched=len(matches), mismatched=len(mismatched))
         else:
             logger.warn('no files match the pattern:', matched=len(matches), mismatched=len(mismatched))
-    elif replacement_pattern:
+    elif params.replacement_pattern:
         rename_matches(matches)
         if matches:
             logger.info('files renamed:', renamed=len(matches), mismatched=len(mismatched))
