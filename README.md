@@ -176,5 +176,6 @@ Options:
   --full                      - Enforces matching full filename against pattern
   --recursive                 - Search directories recursively
   --collate                   - Compare source filenames with the replaced names
+  --short                     - Print output in short, less verbose format without time
   --pad-to PAD_TO             - Applies padding with zeros with given length on matched numerical groups
 ```
