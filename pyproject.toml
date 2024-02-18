@@ -1,6 +1,6 @@
 [project]
 name = "regex-rename"
-version = "1.3.3"
+version = "1.3.3"  # also in regex_rename/version.py
 description = "Regular expressions bulk rename tool for multiple files"
 license = {text = "MIT"}
 authors = [
