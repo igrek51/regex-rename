@@ -8,6 +8,14 @@
 
 Bulk rename tool based on regular expressions to rename multiple files at once.
 
+<div align="center">
+    <a href="https://github.com/igrek51/regex-rename">GitHub</a>
+    -
+    <a href="https://pypi.org/project/regex-rename">PyPI</a>
+    -
+    <a href="https://igrek51.github.io/regex-rename">Documentation</a>
+</div>
+
 ## Quickstart
 Renaming multiple files at once:
 ```shell

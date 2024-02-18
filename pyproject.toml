@@ -16,7 +16,7 @@ requires-python = ">=3.7"
 dynamic = ["dependencies"]
 
 [project.urls]
-homepage = "https://github.com/igrek51/regex-rename"
+Homepage = "https://github.com/igrek51/regex-rename"
 
 
 [build-system]
