@@ -2,6 +2,7 @@ import re
 from dataclasses import dataclass
 from typing import Dict, Optional
 
+from colorama import Fore, Style
 from nuclear.sublog import logger
 
 
@@ -19,8 +20,8 @@ def log_match_info(match: Match, dry_run: bool, collate: bool):
         logger.info('matched file:', file=match.name_from, **group_kwargs)
     else:
         if collate:
-            print(f'- from: {match.name_from}')
-            print(f'    to: {match.name_to}')
+            print(f'{Fore.RED}-from: {match.name_from}{Style.RESET_ALL}')
+            print(f'{Fore.GREEN}+  to: {match.name_to}{Style.RESET_ALL}')
         elif dry_run:
             logger.info('matched file:', **{'from': match.name_from, 'to': match.name_to}, **group_kwargs)
         else:
