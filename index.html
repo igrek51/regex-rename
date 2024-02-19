@@ -1,0 +1,726 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="igrek51">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>regex-rename</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="docs/css/termynal.css">
+    
+      <link rel="stylesheet" href="docs/css/custom.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#regex-rename" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="regex-rename" class="md-header__button md-logo" aria-label="regex-rename" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m16.24 3.56 4.95 4.94c.78.79.78 2.05 0 2.84L12 20.53a4.008 4.008 0 0 1-5.66 0L2.81 17c-.78-.79-.78-2.05 0-2.84l10.6-10.6c.79-.78 2.05-.78 2.83 0M4.22 15.58l3.54 3.53c.78.79 2.04.79 2.83 0l3.53-3.53-4.95-4.95-4.95 4.95Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            regex-rename
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/igrek51/regex-rename" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    igrek51/regex-rename
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="regex-rename" class="md-nav__button md-logo" aria-label="regex-rename" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m16.24 3.56 4.95 4.94c.78.79.78 2.05 0 2.84L12 20.53a4.008 4.008 0 0 1-5.66 0L2.81 17c-.78-.79-.78-2.05 0-2.84l10.6-10.6c.79-.78 2.05-.78 2.83 0M4.22 15.58l3.54 3.53c.78.79 2.04.79 2.83 0l3.53-3.53-4.95-4.95-4.95 4.95Z"/></svg>
+
+    </a>
+    regex-rename
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/igrek51/regex-rename" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    igrek51/regex-rename
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        Home
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial" class="md-nav__link">
+    Tutorial
+  </a>
+  
+    <nav class="md-nav" aria-label="Tutorial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-match" class="md-nav__link">
+    Step 1: Match
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-replace" class="md-nav__link">
+    Step 2: Replace
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-execute" class="md-nav__link">
+    Step 3: Execute
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beyond-the-regex" class="md-nav__link">
+    Beyond the Regex
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-examples" class="md-nav__link">
+    More examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quickstart" class="md-nav__link">
+    Quickstart
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial" class="md-nav__link">
+    Tutorial
+  </a>
+  
+    <nav class="md-nav" aria-label="Tutorial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-match" class="md-nav__link">
+    Step 1: Match
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-replace" class="md-nav__link">
+    Step 2: Replace
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-execute" class="md-nav__link">
+    Step 3: Execute
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beyond-the-regex" class="md-nav__link">
+    Beyond the Regex
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-examples" class="md-nav__link">
+    More examples
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="regex-rename">regex-rename</h1>
+<p><a href="https://github.com/igrek51/regex-rename"><img alt="GitHub version (latest SemVer)" src="https://img.shields.io/github/v/tag/igrek51/regex-rename?label=github&amp;sort=semver" /></a>
+<a href="https://pypi.org/project/regex-rename"><img alt="PyPI" src="https://img.shields.io/pypi/v/regex-rename" /></a>
+<a href="https://igrek51.github.io/regex-rename"><img alt="Github Pages" src="https://img.shields.io/badge/docs-github.io-blue" /></a>
+<a href="https://codecov.io/gh/igrek51/regex-rename"><img alt="codecov" src="https://codecov.io/gh/igrek51/regex-rename/branch/master/graph/badge.svg" /></a>
+<a href="https://github.com/igrek51/regex-rename/actions?query=workflow%3Atest"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/igrek51/regex-rename/test.yml?branch=master&amp;label=tests" /></a></p>
+<p>Bulk rename tool based on regular expressions to rename multiple files at once.</p>
+<div align="center">
+    <a href="https://github.com/igrek51/regex-rename">GitHub</a>
+    -
+    <a href="https://pypi.org/project/regex-rename">PyPI</a>
+    -
+    <a href="https://igrek51.github.io/regex-rename">Documentation</a>
+</div>
+
+<h2 id="quickstart">Quickstart</h2>
+<p>Renaming multiple files at once:
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>ls<span class="w"> </span><span class="c1"># awful names:</span>
+b45XDS-01.mp3<span class="w">  </span>QsEW2s-02.mp3<span class="w">  </span>VF7t6L-03.mp3
+
+$<span class="w"> </span>regex-rename<span class="w"> </span><span class="s1">&#39;-(\d+).mp3&#39;</span><span class="w"> </span><span class="s1">&#39;\1_NeverGonnaGiveYouUp.mp3&#39;</span><span class="w"> </span>--rename
+<span class="o">[</span><span class="m">2022</span>-04-09<span class="w"> </span><span class="m">09</span>:19:15<span class="o">]</span><span class="w"> </span>DEBUG<span class="w"> </span>matching<span class="w"> </span>regular<span class="w"> </span>expression<span class="w"> </span>pattern<span class="w"> </span>to<span class="w"> </span>files:<span class="w"> </span><span class="nv">pattern</span><span class="o">=</span>-<span class="o">(</span><span class="se">\d</span>+<span class="o">)</span>.mp3<span class="w"> </span><span class="nv">replacement</span><span class="o">=</span><span class="se">\1</span>_NeverGonnaGiveYouUp.mp3<span class="w"> </span><span class="nv">full_match</span><span class="o">=</span>False<span class="w"> </span><span class="nv">dry_run</span><span class="o">=</span>False
+<span class="o">[</span><span class="m">2022</span>-04-09<span class="w"> </span><span class="m">09</span>:19:15<span class="o">]</span><span class="w"> </span>INFO<span class="w">  </span>renaming<span class="w"> </span>file:<span class="w"> </span><span class="nv">from</span><span class="o">=</span>b45XDS-01.mp3<span class="w"> </span><span class="nv">to</span><span class="o">=</span>01_NeverGonnaGiveYouUp.mp3
+<span class="o">[</span><span class="m">2022</span>-04-09<span class="w"> </span><span class="m">09</span>:19:15<span class="o">]</span><span class="w"> </span>INFO<span class="w">  </span>renaming<span class="w"> </span>file:<span class="w"> </span><span class="nv">from</span><span class="o">=</span>QsEW2s-02.mp3<span class="w"> </span><span class="nv">to</span><span class="o">=</span>02_NeverGonnaGiveYouUp.mp3
+<span class="o">[</span><span class="m">2022</span>-04-09<span class="w"> </span><span class="m">09</span>:19:15<span class="o">]</span><span class="w"> </span>INFO<span class="w">  </span>renaming<span class="w"> </span>file:<span class="w"> </span><span class="nv">from</span><span class="o">=</span>VF7t6L-03.mp3<span class="w"> </span><span class="nv">to</span><span class="o">=</span>03_NeverGonnaGiveYouUp.mp3
+<span class="o">[</span><span class="m">2022</span>-04-09<span class="w"> </span><span class="m">09</span>:19:15<span class="o">]</span><span class="w"> </span>INFO<span class="w">  </span>files<span class="w"> </span>renamed:<span class="w"> </span><span class="nv">renamed</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="nv">mismatched</span><span class="o">=</span><span class="m">0</span>
+
+$<span class="w"> </span>ls<span class="w"> </span><span class="c1"># now we&#39;re talking:</span>
+01_NeverGonnaGiveYouUp.mp3<span class="w">  </span>02_NeverGonnaGiveYouUp.mp3<span class="w">  </span>03_NeverGonnaGiveYouUp.mp3
+</code></pre></div></p>
+<h2 id="installation">Installation</h2>
+<div class="highlight"><pre><span></span><code>pip3<span class="w"> </span>install<span class="w"> </span>regex-rename
+</code></pre></div>
+<p>It requires Python 3.7 (or newer) with pip.</p>
+<h2 id="tutorial">Tutorial</h2>
+<p>Imagine you have 51 audio files with hideous names like this and you wish to rename them:</p>
+<ul>
+<li><code>Stanislaw+Lem+Invincible+(01).mp3</code> -&gt; <code>01 The Invincible.mp3</code></li>
+<li><code>Stanis▯aw+Lem+Invincible+(02 ).mp3</code> -&gt; <code>02 The Invincible.mp3</code></li>
+<li><code>Stanisław_Lem_Invincible (03) .mp3</code> -&gt; <code>03 The Invincible.mp3</code></li>
+<li>…</li>
+<li><code>Stanis▯aw+Lem+Invincible+(51).mp3</code> -&gt; <code>51 The Invincible.mp3</code></li>
+</ul>
+<p>Specifically, you want to place the episode number at the beginning.</p>
+<h3 id="step-1-match">Step 1: Match</h3>
+<p>Regular Expressions can be tricky.
+We figured out this pattern may match the files and extracts the episode number:
+<div class="highlight"><pre><span></span><code>(\d+).*mp3
+</code></pre></div></p>
+<p>First, let's check this pattern in a dry run:  </p>
+<div class="termy">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>regex-rename<span class="w"> </span><span class="s1">&#39;(\d+).*mp3&#39;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;DEBUG&lt;/span&gt; matching regex pattern &lt;span class=&quot;code-green&quot;&gt;pattern=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;(\d+).*mp3&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;dry_run=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;True&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  matched file &lt;span class=&quot;code-green&quot;&gt;file=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanisław_Lem_Invincible (03)  .mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;group_1=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;03&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  matched file &lt;span class=&quot;code-green&quot;&gt;file=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanis▯aw+Lem+Invincible+(01).mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;group_1=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;01&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  matched file &lt;span class=&quot;code-green&quot;&gt;file=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanis▯aw+Lem+Invincible+(02 ).mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;group_1=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;02&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  matched file &lt;span class=&quot;code-green&quot;&gt;file=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanis▯aw+Lem+Invincible+(51).mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;group_1=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;51&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  files matched &lt;span class=&quot;code-green&quot;&gt;count=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;4&lt;/span&gt;</span>
+</code></pre></div>
+
+</div>
+
+<p>Pay attention to the extracted regex groups.</p>
+<h3 id="step-2-replace">Step 2: Replace</h3>
+<p>Now, we'd like to replace all files to a pattern: 
+<div class="highlight"><pre><span></span><code>\1 The Invincible.mp3
+</code></pre></div>
+<code>\1</code> is a first group extracted by the matching pattern (episode number).</p>
+<p>Let's test it by adding the replacement pattern:  </p>
+<div class="termy">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>regex-rename<span class="w"> </span><span class="s1">&#39;(\d+).*mp3&#39;</span><span class="w"> </span><span class="s1">&#39;\1 The Invincible.mp3&#39;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;DEBUG&lt;/span&gt; matching regex pattern &lt;span class=&quot;code-green&quot;&gt;pattern=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;(\d+).mp3&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;replacement=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;\1 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;dry_run=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;True&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  matched file </span>
+<span class="go">&lt;span class=&quot;code-green&quot;&gt;from=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanisław_Lem_Invincible (03)  .mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;to=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;03 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;group_1=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;03&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  matched file </span>
+<span class="go">&lt;span class=&quot;code-green&quot;&gt;from=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanis▯aw+Lem+Invincible+(01).mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;to=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;01 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;group_1=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;01&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  matched file </span>
+<span class="go">&lt;span class=&quot;code-green&quot;&gt;from=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanis▯aw+Lem+Invincible+(02 ).mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;to=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;02 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;group_1=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;02&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  matched file </span>
+<span class="go">&lt;span class=&quot;code-green&quot;&gt;from=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanis▯aw+Lem+Invincible+(51).mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;to=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;51 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;group_1=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;51&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  files matched &lt;span class=&quot;code-green&quot;&gt;count=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;4&lt;/span&gt;</span>
+</code></pre></div>
+
+</div>
+
+<h3 id="step-3-execute">Step 3: Execute</h3>
+<p>All above commands were just dry-run so that we could experiment with regex patterns. 
+Once we're sure that everything is matched correctly, we can append <code>--rename</code> flag, 
+which does the actual renaming:  </p>
+<div class="termy">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>regex-rename<span class="w"> </span><span class="s1">&#39;(\d+).*mp3&#39;</span><span class="w"> </span><span class="s1">&#39;\1 The Invincible.mp3&#39;</span><span class="w"> </span>--rename
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;DEBUG&lt;/span&gt; matching regex pattern &lt;span class=&quot;code-green&quot;&gt;pattern=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;(\d+).mp3&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;replacement=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;\1 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;dry_run=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;False&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  renaming file &lt;span class=&quot;code-green&quot;&gt;from=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanisław_Lem_Invincible (03)  .mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;to=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;03 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  renaming file &lt;span class=&quot;code-green&quot;&gt;from=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanis▯aw+Lem+Invincible+(01).mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;to=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;01 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  renaming file &lt;span class=&quot;code-green&quot;&gt;from=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanis▯aw+Lem+Invincible+(02 ).mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;to=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;02 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  renaming file &lt;span class=&quot;code-green&quot;&gt;from=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;Stanis▯aw+Lem+Invincible+(51).mp3&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;code-green&quot;&gt;to=&quot;&lt;span class=&quot;code-bold-green&quot;&gt;51 The Invincible.mp3&lt;/span&gt;&quot;&lt;/span&gt;</span>
+<span class="go">&lt;span class=&quot;code-gray&quot;&gt;[2022-04-01 09:19:15]&lt;/span&gt; &lt;span class=&quot;code-blue&quot;&gt;INFO&lt;/span&gt;  files renamed &lt;span class=&quot;code-green&quot;&gt;count=&lt;/span&gt;&lt;span class=&quot;code-bold-green&quot;&gt;4&lt;/span&gt;</span>
+</code></pre></div>
+
+</div>
+
+<p>Finally, files are named properly:</p>
+<ul>
+<li><code>01 The Invincible.mp3</code></li>
+<li><code>02 The Invincible.mp3</code></li>
+<li><code>03 The Invincible.mp3</code></li>
+<li>…</li>
+<li><code>51 The Invincible.mp3</code></li>
+</ul>
+<h2 id="beyond-the-regex">Beyond the Regex</h2>
+<p><code>regex-rename</code> also supports some transformations not covered by regular expressions standard:</p>
+<ul>
+<li>Converting to lowercase by adding <code>\L</code> before group number:<br />
+<code>regex-rename '([A-Z]+).mp3' '\L\1.mp3'</code><br />
+eg. <code>AUDIO.mp3</code> to <code>audio.mp3</code></li>
+<li>Converting to uppercase by adding <code>\U</code> before group number:<br />
+<code>regex-rename '([a-z]+).mp3' '\U\1.mp3'</code><br />
+eg. <code>audio.mp3</code> to <code>AUDIO.mp3</code></li>
+<li>Padding numbers with leading zeros by adding <code>\P2</code>, <code>\P3</code>, … (depending on padding length) before group number:<br />
+<code>regex-rename '(\d+).mp3' '\P2\1.mp3'</code><br />
+eg. <code>1.mp3</code> to <code>01.mp3</code></li>
+<li>Padding numbers with leading zeros by specifying <code>--pad-to</code> parameter:<br />
+<code>regex-rename '(\d+).mp3' '\1.mp3' --pad-to=2</code><br />
+eg. <code>1.mp3</code> to <code>01.mp3</code></li>
+</ul>
+<h2 id="more-examples">More examples</h2>
+<ul>
+<li>
+<p>Extract season and episode numbers, eg. <code>episode-02x05.mkv</code> to <code>S02E05.mkv</code>:<br />
+  <div class="highlight"><pre><span></span><code>regex-rename<span class="w"> </span><span class="s1">&#39;(\d+)x(\d+)&#39;</span><span class="w"> </span><span class="s1">&#39;S\1E\2.mkv&#39;</span><span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+<li>
+<p>Swap artist with title, eg. <code>Echoes - Pink Floyd.mp3</code> to <code>Pink Floyd - Echoes.mp3</code>:<br />
+  <div class="highlight"><pre><span></span><code>regex-rename<span class="w"> </span><span class="s1">&#39;([^-]+) - ([^-]+)\.mp3&#39;</span><span class="w"> </span><span class="s1">&#39;\2 - \1.mp3&#39;</span><span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+<li>
+<p>Pad leading zeros, eg. <code>1.mp3</code> to <code>001.mp3</code>:<br />
+  <div class="highlight"><pre><span></span><code>regex-rename<span class="w"> </span><span class="s1">&#39;(\d+).mp3&#39;</span><span class="w"> </span><span class="s1">&#39;\P3\1.mp3&#39;</span><span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+<li>
+<p>Convert to lowercase, eg. <code>SONG.MP3</code> to <code>song.mp3</code>:<br />
+  <div class="highlight"><pre><span></span><code>regex-rename<span class="w"> </span><span class="s1">&#39;(.+)&#39;</span><span class="w"> </span><span class="s1">&#39;\L\1&#39;</span><span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+<li>
+<p>Convert to uppercase, eg. <code>Tool.mp3</code> to <code>TOOL.mp3</code>:<br />
+  <div class="highlight"><pre><span></span><code>regex-rename<span class="w"> </span><span class="s1">&#39;(.+)\.mp3&#39;</span><span class="w"> </span><span class="s1">&#39;\U\1.mp3&#39;</span><span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+<li>
+<p>Add prefix, eg. <code>Doors.mp3</code> to <code>The Doors.mp3</code>:<br />
+  <div class="highlight"><pre><span></span><code>regex-rename<span class="w"> </span><span class="s1">&#39;(.+)&#39;</span><span class="w"> </span><span class="s1">&#39;The \1&#39;</span><span class="w"> </span>--full<span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+<li>
+<p>Change extension, eg. <code>Songbook.apk</code> to <code>Songbook.zip</code>:<br />
+  <div class="highlight"><pre><span></span><code>regex-rename<span class="w"> </span><span class="s1">&#39;(.+)\.apk&#39;</span><span class="w"> </span><span class="s1">&#39;\1.zip&#39;</span><span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+<li>
+<p>Turn directories into prefixes and move files, eg. <code>Pink Floyd/Echoes.mp3</code> to <code>Pink Floyd - Echoes.mp3</code>:<br />
+  <div class="highlight"><pre><span></span><code>regex-rename<span class="w"> </span><span class="s1">&#39;(.+)/(.+).mp3&#39;</span><span class="w"> </span><span class="s1">&#39;\1 - \2.mp3&#39;</span><span class="w"> </span>--full<span class="w"> </span>--recursive<span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+<li>
+<p>Rename files in different directories, preserving their parent directories,
+  eg. <code>app/logs/file-001.log</code> to <code>app/logs/file_001.txt</code>:<br />
+  <div class="highlight"><pre><span></span><code>regex-rename<span class="w"> </span><span class="s1">&#39;(.*)/file-([0-9]+).log&#39;</span><span class="w"> </span><span class="s1">&#39;\1/file_\2.txt&#39;</span><span class="w"> </span>--full<span class="w"> </span>--recursive<span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+<li>
+<p>Rename files piped from another command like <code>find</code>,
+  eg. <code>songs/Jimmi - Voodoo Child.mp3</code> to <code>songs/Jimi - Voodoo Child.mp3</code>:<br />
+  <div class="highlight"><pre><span></span><code>find<span class="w"> </span>-iname<span class="w"> </span><span class="s1">&#39;*jimmi*&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>regex-rename<span class="w"> </span><span class="s1">&#39;(.*)/.* - (.*).mp3$&#39;</span><span class="w"> </span><span class="s1">&#39;\1/Jimi - \2.mp3&#39;</span><span class="w"> </span>--rename
+</code></pre></div></p>
+</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p>Enter <code>regex-rename</code> for help:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>regex-rename<span class="w"> </span>
+regex-rename<span class="w"> </span>v1.3.0<span class="w"> </span>-<span class="w"> </span>Bulk<span class="w"> </span>rename<span class="w"> </span>tool<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>regular<span class="w"> </span>expressions<span class="w"> </span>to<span class="w"> </span>rename<span class="w"> </span>multiple<span class="w"> </span>files<span class="w"> </span>at<span class="w"> </span>once
+
+Usage:
+regex-rename<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>PATTERN<span class="w"> </span><span class="o">[</span>REPLACEMENT<span class="o">]</span>
+
+Arguments:
+<span class="w">   </span>PATTERN<span class="w">       </span>-<span class="w"> </span>Regex<span class="w"> </span>pattern<span class="w"> </span>to<span class="w"> </span>match<span class="w"> </span>filenames
+<span class="w">   </span><span class="o">[</span>REPLACEMENT<span class="o">]</span><span class="w"> </span>-<span class="w"> </span>Replacement<span class="w"> </span>regex<span class="w"> </span>pattern<span class="w"> </span><span class="k">for</span><span class="w"> </span>renamed<span class="w"> </span>files.<span class="w"> </span>Use<span class="w"> </span><span class="se">\1</span>,<span class="w"> </span><span class="se">\2</span><span class="w"> </span>syntax<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>use<span class="w"> </span>of<span class="w"> </span>matched<span class="w"> </span>groups
+
+Options:
+<span class="w">  </span>--version<span class="w">                   </span>-<span class="w"> </span>Print<span class="w"> </span>version<span class="w"> </span>information<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<span class="w">  </span>-h,<span class="w"> </span>--help<span class="w"> </span><span class="o">[</span>SUBCOMMANDS...<span class="o">]</span><span class="w"> </span>-<span class="w"> </span>Display<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<span class="w">  </span>-r,<span class="w"> </span>--rename<span class="w">                </span>-<span class="w"> </span>Does<span class="w"> </span>actual<span class="w"> </span>renaming<span class="w"> </span>files<span class="w"> </span>instead<span class="w"> </span>of<span class="w"> </span>just<span class="w"> </span>testing<span class="w"> </span>replacement<span class="w"> </span>pattern
+<span class="w">  </span>--full<span class="w">                      </span>-<span class="w"> </span>Enforces<span class="w"> </span>matching<span class="w"> </span>full<span class="w"> </span>filename<span class="w"> </span>against<span class="w"> </span>pattern
+<span class="w">  </span>--recursive<span class="w">                 </span>-<span class="w"> </span>Search<span class="w"> </span>directories<span class="w"> </span>recursively
+<span class="w">  </span>--collate<span class="w">                   </span>-<span class="w"> </span>Compare<span class="w"> </span><span class="nb">source</span><span class="w"> </span>filenames<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>replaced<span class="w"> </span>names
+<span class="w">  </span>--short<span class="w">                     </span>-<span class="w"> </span>Print<span class="w"> </span>output<span class="w"> </span><span class="k">in</span><span class="w"> </span>short,<span class="w"> </span>less<span class="w"> </span>verbose<span class="w"> </span>format<span class="w"> </span>without<span class="w"> </span><span class="nb">time</span>
+<span class="w">  </span>--pad-to<span class="w"> </span>PAD_TO<span class="w">             </span>-<span class="w"> </span>Applies<span class="w"> </span>padding<span class="w"> </span>with<span class="w"> </span>zeros<span class="w"> </span>with<span class="w"> </span>given<span class="w"> </span>length<span class="w"> </span>on<span class="w"> </span>matched<span class="w"> </span>numerical<span class="w"> </span>groups
+</code></pre></div>
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    <a href="https://github.com/igrek51/regex-rename" target="_blank" rel="noopener" title="regex-rename on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand"], "search": "assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.078830c0.min.js"></script>
+      
+        <script src="docs/js/termynal.js"></script>
+      
+        <script src="docs/js/custom.js"></script>
+      
+    
+  </body>
+</html>
