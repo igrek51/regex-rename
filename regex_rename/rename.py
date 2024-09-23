@@ -210,7 +210,8 @@ def check_duplicates(matches: List[Match]):
     duplicates = set((name for name in names if names.count(name) > 1))
     if duplicates:
         duplicates_desc = ', '.join(sorted(duplicates))
-        raise RuntimeError(f'aborting - found duplicate filenames after replacement: {duplicates_desc}')
+        duplicates_count = sum(1 for name in names if names.count(name) > 1)
+        raise RuntimeError(f'aborting - found {duplicates_count} duplicate filenames after replacement: {duplicates_desc}')
 
 
 def rename_matches(matches: List[Match]):

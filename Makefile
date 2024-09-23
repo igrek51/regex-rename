@@ -1,6 +1,6 @@
-.PHONY: setup test clean build dist
+.PHONY: venv test clean build dist
 
-setup:
+venv:
 	python3 -m venv venv &&\
 	. venv/bin/activate &&\
 	pip install --upgrade pip &&\

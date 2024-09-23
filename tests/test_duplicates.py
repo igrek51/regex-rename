@@ -18,7 +18,7 @@ def test_duplicates_after_replacement():
                 dry_run=True,
             ))
 
-        assert 'aborting - found duplicate filenames after replacement: 0.mp3' in str(excinfo.value)
+        assert 'aborting - found 2 duplicate filenames after replacement: 0.mp3' in str(excinfo.value)
 
     finally:
         os.chdir(cwd)
