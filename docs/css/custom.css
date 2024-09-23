@@ -1,0 +1,40 @@
+.termynal-comment {
+    color: #4a968f;
+    font-style: italic;
+    display: block;
+}
+
+.termy {
+    /* For right to left languages */
+    direction: ltr;
+}
+
+.termy [data-termynal] {
+    white-space: pre-wrap;
+}
+
+  
+.code-gray {
+    color: #AAAAAA;
+    font-weight: normal;
+}
+
+.code-green {
+    color: #4E9A06;
+    font-weight: normal;
+}
+
+.code-blue {
+    color: #3465A4;
+    font-weight: normal;
+}
+
+.code-yellow {
+    color: #C39F00;
+    font-weight: normal;
+}
+
+.code-bold-green {
+    color: #8AE234;
+    font-weight: bold;
+}
