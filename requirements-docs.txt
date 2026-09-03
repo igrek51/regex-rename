@@ -1,5 +1,5 @@
 # Documentation tools
 mkdocs==1.4.0
-mkdocs-material==8.5.6
+mkdocs-material==9.7.7
 mkdocs-same-dir==0.1.2
 mkdocs-exclude==1.0.2
